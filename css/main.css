@@ -1,0 +1,353 @@
+@charset "UTF-8";
+@import url("base.css");
+
+	/** Inställningar för den högra kolumnen*
+---------------------------------------------------------------------- */
+	#fluid {		float: right;
+					width: 100%; 
+					min-height:800px;
+					height:100%;
+					height:auto !important;  
+					margin-left: -250px;} /* storleken på statiska diven*/
+				
+	#column-right {	margin-left: 250px; /* storleken på statiska diven. */
+					overflow:hidden;
+					background:url('../images/bk_main.png');
+					background-size:contain;
+					background-repeat:repeat-y; 
+					padding-top:40px;
+					padding-left:40px;
+					} 
+	#column-right  h1 {		
+					float:left;
+				
+	}	
+					
+		/** Inställningar för den vänstra kolumnen*
+---------------------------------------------------------------------- */
+	#column-left {	width:100%;
+					min-height:800px; 	
+					height:inherit;
+					
+					}
+					
+	#fixed-width {
+					width: 228px; /* storleken på statiska diven exkl padding. + 8px */
+					background:#333;
+					margin-left:-8px;
+					padding-left:30px;
+					height:inherit;
+					top:0;
+					position: absolute;
+				}
+				
+      /**   MENU   column left**
+------------------------------------*/
+	#logo {
+				margin-top:25px;
+				height:100px;
+	}
+	
+	#logo a {
+				padding:0;
+	}
+	
+	#logo img {
+				max-width:100%;
+	}
+	
+	#menu {
+		width:100%; 
+		display:block;
+		height:100%;
+		padding: 10px 0;
+		margin-bottom: 50px;
+		color:#FFF;
+		
+	}
+	
+	#menu ul {
+			overflow:hidden; margin-left:-20px;
+			width:90%;
+			}
+			
+	#menu  li {			
+				margin-left:-1.5em; 
+	}
+	#menu a {
+		color:#FFF;	
+		padding:10px;
+		font-weight:bold;
+	}
+
+
+/**   SONGLIST   **
+------------------------------------*/	
+	#menu #instrumentBtn {
+				background:#E95D39;
+				font-size:1.3em;
+				padding-left:10px;
+				margin-left:-10px;
+			
+	}
+	
+	#instrumentBtn {
+				margin-top:15px;
+	}
+	
+	#songMenu {
+				
+				margin-bottom:15px;
+				width:100%;
+				
+				
+	}
+	
+	#songMenu li {
+				background:#EBC148;
+				border-bottom:5px solid #333;
+				width:100%;
+	}
+	
+	#songMenu a {
+				color:#333;
+				width:100%;
+	}
+	
+	#songList a{
+				float:left;
+				color:#FFF;
+				background:#E95D39;
+				border-radius:5px;
+				line-height:15px;
+				text-align:center;
+				padding:10px 20px;
+				margin-left:35px;
+				margin-top:20px;
+				width:200px;
+				font-weight:bold;
+	}
+	#songList ul {
+				border-top: 1px solid #333333;
+				float:left;
+				list-style-position: inside;
+				width:100%;
+				height:100%;
+				height: auto !important;
+				padding: 0;
+				margin:0;
+				margin-bottom:20px;
+				
+	}
+	
+
+	
+
+	
+	
+
+	/**   INSTRUMENT LIST   **
+------------------------------------*/	
+	#instrumentlist {
+				border-top: 1px solid #333333;
+				float:left;
+				list-style-position: inside;
+				width:100%;
+				height:100%;
+				height: auto !important;
+				padding: 0;
+				margin:0;
+	}
+	
+	#instrumentlist input {
+    			float:right;
+    			margin-top:-75px;
+	}
+	
+	#instrumentlist a {
+				text-align:left;
+				font-weight:bold;
+				padding:0;
+				padding-right: 30px;
+				padding-left: 20px;
+				padding-top: 10px;
+				font-size:1.2em; 
+				width:50%;
+				max-width:600px;
+				
+	}
+	
+	
+	#instrumentlist p {
+				padding-left: 20px; text-align:left;
+				font-weight:normal;
+	}
+			
+	#instrumentlist li {		
+				list-style-type: none;	
+				display:block;
+				float:left;
+				clear:both;
+				width:100%;
+				font-size:1em;		
+				padding-top:10px;
+	}	
+	
+	
+	#instrumentlist li:nth-child(even) { background: #CCC;}
+	#instrumentlist li:nth-child(odd) { background: #FFF;}
+
+	
+	article, aside, details, figcaption, figure, main
+	footer, header, hgroup, menu, nav, section{ display: block; } 	
+	
+	
+	/**    FORMS       **
+-------------------------------------------------------------------*/		
+	#addInstrument {
+				width:100%;
+				height:100%;
+				padding-left:70px;
+		
+	}
+	#addInstrument h1 {
+				text-align:left;
+	}
+	
+	/**   INSTRUMENT OVERVIEW      **
+-------------------------------------------------------------------*/
+	.deleteBtn { 
+				display:block;
+				float:right;
+				width:100px;
+				font-size:.7em;
+				text-align:center;
+				padding:10px 20px;
+				padding-right:0px;
+				padding-left: 0px;
+				margin-right:20px;
+				color:#FFF;
+				background:#E95D39;
+				border-radius:5px;
+				line-height:15px;
+				font-weight:bold;
+		
+		}
+		
+	.chooseInstrument {
+					display:block;
+					float:right;
+					margin-right:50px;
+					color:#E95D39;
+					font-weight:bold;
+					margin-top:50px;
+	}
+		
+/**   SONG OVERVIEW      ** TODO-fix textarea!
+-------------------------------------------------------------------*/
+#textbox {
+	background: url('images/white.png') center center no-repeat; /* This ruins default border */
+	background:#EBC148;
+	width:500px;
+	max-width:500px;
+	height:300px;
+	max-height:300px;
+	display:block;
+	outline:none;
+	border:1px solid #000;
+	padding:15px;
+	border-radius:20px;
+}
+
+
+
+	
+	/**    INPUTS       **
+-------------------------------------------------------------------*/
+	label {
+		display:block;
+		clear:both;
+	}
+	input {
+		height:30px;
+		width:300px;
+		margin:5px 5px 10px 0;
+		float:left;
+		clear:both;
+	}
+	input:focus {
+	border: 1px solid #333;
+	}
+
+	.LoginBox {
+	
+		min-width:260px;
+		width:40%;
+		min-height:370px;
+		height:100%; 
+		height:auto !important;
+		padding:0 20px;
+		background:#F2F1F1;
+		box-shadow:0px 0px 10px #160b02;
+		-moz-box-shadow:5px 5px 10px #160b02;
+		-webkit-box-shadow:5px 5px 10px #160b02;
+		border-radius:10px;
+		margin:0 auto;
+		padding-bottom:20px;
+		margin-bottom:20px;
+	} 
+	.LoginBox p {
+		text-align:left;
+		margin-top:25px;
+	}
+	
+	.LoginBox h2 {
+		margin-top:5px;
+		line-height:17px;
+	}
+	
+	.errorMessage {
+		padding-bottom:5px;
+		font-weight:bold;
+		color:red;
+	}
+	
+	.textbox {
+		padding:5px;
+		border:1px solid #CCC;
+		border-radius:3px;
+		width:200px;
+		display:block;	
+	}
+	
+	#feedbackLogin {
+		padding:10px 0;
+		clear:both;
+	}
+	.LoginBtn, .LogoutBtn {
+		padding:5px 30px;
+		margin-top:15px;
+		display:block;
+		margin-bottom:45px;
+		background:#000;
+		color:#FFF;
+		border:1px solid #000;
+		border-radius: 3px;
+		cursor:pointer;
+		clear:both;
+	}
+	.LoginBtn:focus , .LogoutBtn:focus{outline:0;}
+	.LogoutBtn {
+		margin:0 auto;
+		margin-top:15px;
+		margin-bottom:45px;
+	}
+	label {
+		display:block;
+		float:left;
+	}
+	.checkbox {
+		float:left;
+		margin-top:-2px;
+		margin-left:10px;
+	}

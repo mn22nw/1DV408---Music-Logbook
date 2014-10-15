@@ -1,0 +1,45 @@
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't existSQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't existSQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'portfoliodb.projects' doesn't exist
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'participantUnique' in 'where clause'
+Couldn't connect to Database
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'personarCn' in 'field list'
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'length' cannot be null
+SQLSTATE[21S01]: Insert value list does not match column list: 1136 Column count doesn't match value count at row 1
+SQLSTATE[21S01]: Insert value list does not match column list: 1136 Column count doesn't match value count at row 1
+nulli
+
+
+
+tjo
+tjo
+
+
+
+
+
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uniqueKey' in 'where clause'
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uniqueKey' in 'where clause'
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uniqueKey' in 'where clause'
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ownerFolderFK' in 'where clause'
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'folderIDFK' in 'where clause'
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'musiclogbook.instrument' doesn't exist
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'musiclogbook.instrument' doesn't exist
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'userIDFK' cannot be null
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'username' in 'where clause'
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'instrumentIDFK' in 'where clause'
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'memberid' in 'where clause'
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'userID' in 'where clause'
