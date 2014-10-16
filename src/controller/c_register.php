@@ -24,7 +24,7 @@
 					 exit;
     			}
 			}
-      		return $this->view->showRegister();
+      		return $this->view->showSignUp();
 	}
 	
 	public function addUser() {   // addUser() is called in viewPage()

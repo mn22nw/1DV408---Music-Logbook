@@ -9,8 +9,9 @@ class NavigationView {
 	public static $id = 'id';
 	public static $actionDefault = 'default';
 	
-	//Register And Login
+	//Login and Register
 	public static $actionLogin = 'login';
+	public static $actionSignOut = 'logOut';
 	public static $actionRegister = 'register';
 	
 	//Instrument
@@ -19,6 +20,7 @@ class NavigationView {
 	public static $actionDeleteInstrument = 'deleteInstrument';
 	public static $actionShowAll = 'showAll';
 	public static $actionSetMainInstrument = 'mainInstrument';
+	
 	//Song
 	public static $actionAddSong = 'addSong';
 	public static $actionShowSong = 'showSong';
@@ -26,12 +28,28 @@ class NavigationView {
 	
 	private $songMenu = "";
 	
+
 	/**
-	 * Get the base menu with correct routed actions.;
+	 * Creates the HTML needed to display the menu for login / home default page
+	 * When user is NOT logged in
+	 * @return String HTML
+	 */
+	public function getBaseMenuStart() {
+		$html = "<div id='menu'>
+					<ul>"; 	
+		$html .= "<li><a href='?".self::$action."=".self::$actionLogin."'>Login</a></li>";  
+		$html .= "<li><a href='?".self::$action."=".self::$actionRegister."'>Register</a></li>"; 
+		$html .= "</ul></div>";
+		return $html;
+	}	
+	
+	
+	/**
+	 * Get the menu when user is logged in.;
 	 * 
 	 * @return String HTML
 	 */
-	public function getMenu(){
+	public function getMenuLoggedIn(){
 		$html = "<div id='menu'>
 					<ul>";
 		$html .= self::getBaseMenu();
@@ -40,23 +58,13 @@ class NavigationView {
 		return $html;
 	}
 	
+	
 	public static function getBaseMenu(){
-		$html = "<li><a href='?".self::$action."=".self::$actionShowAll."'>Show all instruments</a></li>";  //&nbsp = TAB TODO remove comment 
-		$html .= "<li><a href='?".self::$action."=".self::$actionAddInstrument."'>Add Instrument</a></li>";  // TODO - add list
+		$html = "<li><a href='?".self::$action."=".self::$actionShowAll."'>Show all instruments</a></li>";  
+		$html .= "<li><a href='?".self::$action."=".self::$actionAddInstrument."'>Add Instrument</a></li>";  
+		$html .= "<li><a href='?".self::$action."=".self::$actionSignOut."'>Sign out</a></li>";
 		return $html;
 	}
-	
-	/**
-	 * Creates the HTML needed to display the menu for login / home default page
-	 * 
-	 * @return String HTML
-	 */
-	public function showLoginMenu() { 	
-		$html = "<li><a href='?".self::$action."=".self::$actionLogin."'>Login</a></li>";  
-		$html .= "<li><a href='?".self::$action."=".self::$actionRegister."'>Register</a></li>"; 
-		return $html;
-	}	
-	
 	
 	
 	//takes parameter containg html

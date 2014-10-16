@@ -17,27 +17,26 @@ namespace view;
 	  $this->sessionHelper = new \helper\SessionHelper();
     }
 	
-	public function showRegister () {
+	public function showSignUp () {
 		
-		$ret = "<h2>Laborationskod mn22nw (mh222zr) </h2>
-	  	<h3>Ej, inloggad. Registrera ny användare</h3>";
+		$ret = "<h2>Sign Up</h2>";
 	
-		 $ret .= "<span class='alert'>" . $this->sessionHelper->getAlert() . "</span>";
+		 $ret .= "<span class='alert'>" . $this->sessionHelper->getAlert() . "</span>";  //TODO ta bort ev strängberoende
 	      $ret .= "
 	  <form action='?" . self::$getRegister . "' method='post'>
-	  	<label for='" . self::$username . "'>Användarnamn</label>
-	    <input type='text' name='" . self::$username . "' placeholder='Användarnamn' value='$this->unValue' maxlength='30'>
+	  	<label for='" . self::$username . "'>Username</label>
+	    <input type='text' name='" . self::$username . "' placeholder='Username' value='$this->unValue' maxlength='30'>
 	    <br />
-	    <label for='" . self::$password . "'>Lösenord</label>
-	    <input type='password' name='" . self::$password . "' placeholder='Lösenord' value='' maxlength='30'>
+	    <label for='" . self::$password . "'>Username</label>
+	    <input type='password' name='" . self::$password . "' placeholder='Password' value='' maxlength='30'>
 	    <br />
-	    <label for='" . self::$repeatPw . "'>Repetera Lösenord</label>
-	    <input type='password' name='" . self::$repeatPw . "' placeholder='Lösenord' value='' maxlength='30'>
+	    <label for='" . self::$repeatPw . "'>Repeat password</label>
+	    <input type='password' name='" . self::$repeatPw . "' placeholder='Password' value='' maxlength='30'>
 	    <br />
-	    <label for='" . self::$registerBtn . "'>Skicka</label>
-	    <input type='submit' value='Registrera' name='" . self::$registerBtn. "'>
+	    <input type='submit' value='Sign up' name='" . self::$registerBtn. "'>
 	  </form>
-	  <br /><a href='index.php'>Tillbaka</a>";
+	  <br />";
+	  //<a href='index.php'>back</a>";
 
       return $ret;
 	}

@@ -21,11 +21,15 @@ $htmlArray = $navigation->doControll();
 
 $htmlBody = $htmlArray[0];
 
-$htmlMenu = $nagivationView->getMenu();
+//$htmlMenu = $nagivationView->getBaseMenuStart();
 	
 	if (!empty($htmlArray[1])) {    //TODO - set songMenu in NavigationController or earlier in index under doControll??
 		$nagivationView->setSongMenu($htmlArray[1]);
-		$htmlMenu = $nagivationView->getMenu();
+		$htmlMenu = $nagivationView->getMenuLoggedIn();
+	}
+	
+	If (!empty($htmlArray[2])) {  
+		$htmlMenu = $nagivationView->getBaseMenuStart();
 	}
 
 $view->echoHTML("Music Logbook - Home", $head, $htmlBody, $htmlMenu);

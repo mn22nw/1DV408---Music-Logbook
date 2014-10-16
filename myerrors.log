@@ -84,3 +84,5 @@ should be here!
 should be here!
 SQLSTATE[42S02]: Base table or view not found: 1146 Table 'musiclogbook.user_labb4' doesn't exist
 Felaktigt anvÃ¤ndarnamn och/eller lÃ¶senord.
+SQLSTATE[HY000] [2002] Det gick inte att göra en anslutning eftersom måldatorn aktivt nekade det.
+

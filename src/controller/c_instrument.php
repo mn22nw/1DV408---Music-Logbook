@@ -60,8 +60,15 @@ class InstrumentController {
 			//$this->sessionHelper->setInstrumentID(7);	//it unsets somewhere??
 			$instrumentID = $this->sessionHelper->getInstrumentID();
 
-			if (empty($instrumentID))	
-				return "";	 //TODO get from database
+			if (empty($instrumentID)){
+					
+				$instrumentID = $this->instrumentRepository->getMainInstrument("miaaim"); //TODO get real username
+				
+				if ($instrumentID == 0)
+				return "";	
+				
+			}	
+				    //TODO get from database
 			
 			$owner = $this->instrumentRepository->get($instrumentID);  
 				

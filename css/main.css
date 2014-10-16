@@ -16,7 +16,7 @@
 					background-size:contain;
 					background-repeat:repeat-y; 
 					padding-top:40px;
-					padding-left:40px;
+					padding-left:40px; 	
 					} 
 	#column-right  h1 {		
 					float:left;
@@ -26,9 +26,7 @@
 		/** Inställningar för den vänstra kolumnen*
 ---------------------------------------------------------------------- */
 	#column-left {	width:100%;
-					min-height:800px; 	
 					height:inherit;
-					
 					}
 					
 	#fixed-width {
@@ -39,6 +37,8 @@
 					height:inherit;
 					top:0;
 					position: absolute;
+					min-height:800px; 
+					padding-bottom:40px;
 				}
 				
       /**   MENU   column left**
@@ -80,6 +80,24 @@
 		font-weight:bold;
 	}
 
+
+/**   HOMEPAGE   **
+------------------------------------*/	
+#startMessage {
+			 min-width:400px;
+			 width:50%;
+			 text-align: center;
+			 padding-bottom:20px;
+			 float:left;
+}
+
+#startMessage h2 {
+				 font-size:1.8em;
+}
+#startMessage p {
+				font-size:1.3em;
+				line-height:40px;
+}	
 
 /**   SONGLIST   **
 ------------------------------------*/	
@@ -305,13 +323,28 @@
 				line-height:30px;
 				font-weight:bold;
 	}
-
+	#signUp {
+				margin-top:60px;
+	  
+		
+	}
+	
 	#login { 	
 				clear:right;
 				background:#E95D39;
 				margin-top: 20px;
 				line-height:10px;
 				font-size:1em;
+	}
+	
+	#musicbar {
+			width:90%;
+			min-width:600px;
+			height:300px;
+			display:block;
+			clear:both;
+			background: url('../images/musicbar.png');
+			background-size:  100% 100%;
 	}
 	
 	/**    LOGIN      **
@@ -321,7 +354,21 @@
 				max-width:350px;
 				
 	}
-	
+	/**/
+	#submit {
+				float:left;
+				color:#FFF;
+				background:#E95D39;
+				border-radius:5px;
+				line-height:10px;
+				text-align:center;
+				padding:10px 20px;
+				margin-left:35px;
+				margin-top:20px;
+				width:200px;
+				font-weight:bold;
+				border:none;
+	}
 	#loginView h2 {
 		
 				max-width:350px;

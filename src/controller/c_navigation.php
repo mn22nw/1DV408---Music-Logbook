@@ -27,14 +27,14 @@ class Navigation {
 				// LOGIN //
 				case $view::$actionLogin: 
 					$controller = new Login();
-					array_push($this->htmlArray, $controller->viewPage(), $view->showLoginMenu()) ;
+					array_push($this->htmlArray, $controller->viewPage(),"", $view->getBaseMenuStart()) ;
 					return $this->htmlArray;
 					break;
 				
 				// REGISTER //
 				case $view::$actionRegister:
 					$controller = new Register();
-					array_push($this->htmlArray, $controller->addInstrument(), $controller->showSongMenu()) ;
+					array_push($this->htmlArray, $controller->viewPage(),"", $view->getBaseMenuStart()) ;
 					return $this->htmlArray;
 					break;	
 						
@@ -92,7 +92,7 @@ class Navigation {
 				// HOME PAGE //
 				default: 
 					$controller = new Login();
-					array_push($this->htmlArray, $controller->viewPage(), $view->showLoginMenu()) ;
+					array_push($this->htmlArray, $controller->viewPage(), "" , $view->getBaseMenuStart()) ;
 					return $this->htmlArray;
 					break;
 			}

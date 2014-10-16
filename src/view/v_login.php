@@ -55,11 +55,15 @@
       * @return string - Homepage
       */
     public function showHomepage() {
-	 
-      $html = "<h2>Welcome to Music Logbook!</h2>";
-	  $html .= "<p>A perfect place to keep track of your favourite songs and progress!</p>";
+	  $html  = "<div id='homepage'>";
+	  $html  = "<div id='startMessage'>";
+      $html .= "<h2>Welcome to Music Logbook!</h2>";
+	  $html .= "<p>A perfect place to keep track of your <br /> favourite songs and progress!</p>";
+	  $html .= "</div>";
 	  $html .= "<a href='?".NavigationView::$action."=".NavigationView::$actionRegister."' id='signUp'>Sign up</a>"; 
 	  $html .= "<a href='?".NavigationView::$action."=".NavigationView::$actionLogin."' id='login'>Login</a>";  
+	  $html .= "<div id='musicbar'></div>";  
+	  $html .= "</div>";
 
       return $html;
     }
@@ -84,7 +88,7 @@
 	    <input type='password' name='". self::$password. "' placeholder='Password' value='' maxlength='30'>
 	    <input type='checkbox' id='". self::$rememberUser. "' name='". self::$rememberUser. "' class='checkbox'>
 	    <p>Remember me</p>
-	    <input type='submit' value='Login' name='". self::$loginBtn. "'>
+	    <input type='submit' value='Login' name='". self::$loginBtn. "' id='submit'>
 	  </form>"; 
 	  $ret .= "<div class='errorMessage'><p>".$this->sessionHelper->getAlert() ."</p></div>";
 	  $ret .= "</div>";
@@ -105,10 +109,8 @@
       // $username = $this->cookieStorage->getCookieValue(self::$username);  // TODO denna strular tillde
       }
 
-      $ret = "<h2>" . $username . " är inloggad</h2>";
+      $ret = "<h2> Welcome " . $username . "</h2>";
       $ret .= "<span class='alert'>" . $this->sessionHelper->getAlert() . "</span> "; // If there are any alerts, show them
-      $ret .= "<a href='?" . self::$getLogout . "'>Logga ut</a>
-      ";
 
       return $ret;
     }
