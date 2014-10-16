@@ -2,6 +2,8 @@
 namespace controller;
 require_once('./src/view/v_navigation.php');
 require_once('./src/controller/c_instrument.php');
+require_once('./src/controller/c_login.php');
+require_once('./src/controller/c_register.php');
 require_once('Settings.php');
 
 /**
@@ -21,6 +23,27 @@ class Navigation {
 
 		try {
 			switch ($view::getAction()) {
+				
+				// LOGIN //
+				case $view::$actionLogin: 
+					$controller = new Login();
+					array_push($this->htmlArray, $controller->viewPage(), $view->showLoginMenu()) ;
+					return $this->htmlArray;
+					break;
+				
+				// REGISTER //
+				case $view::$actionRegister:
+					$controller = new Register();
+					array_push($this->htmlArray, $controller->addInstrument(), $controller->showSongMenu()) ;
+					return $this->htmlArray;
+					break;	
+						
+				// SHOW ALL INSTRUMENTS //		
+				case $view::$actionShowAll:
+					$controller = new InstrumentController();
+					array_push($this->htmlArray, $controller->showAllInstruments(), $controller->showSongMenu());
+					return $this->htmlArray;
+					break;	
 					
 				// ADD INSTRUMENT //
 				case $view::$actionAddInstrument:
@@ -57,7 +80,7 @@ class Navigation {
 				// DELETE SONG //		
 				case $view::$actionDeleteSong:
 					$controller = new InstrumentController();
-					array_push($this->htmlArray, $controller->deleteSong(), $controller->showSongMenu());
+					array_push($this->htmlArray, $controller->deleteSong());
 					return $this->htmlArray; 
 				
 				// SET MAIN INSTRUMENT //		
@@ -65,10 +88,11 @@ class Navigation {
 					$controller = new InstrumentController();
 					array_push($this->htmlArray, $controller->setMainInstrument(), $controller->showSongMenu());
 					return $this->htmlArray;
-					
-				default:
-					$controller = new InstrumentController();
-					array_push($this->htmlArray, $controller->showAllInstruments(), $controller->showSongMenu());
+				
+				// HOME PAGE //
+				default: 
+					$controller = new Login();
+					array_push($this->htmlArray, $controller->viewPage(), $view->showLoginMenu()) ;
 					return $this->htmlArray;
 					break;
 			}

@@ -174,6 +174,7 @@
 				font-size:1.2em; 
 				width:50%;
 				max-width:600px;
+				color:#E95D39;
 				
 	}
 	
@@ -181,6 +182,7 @@
 	#instrumentlist p {
 				padding-left: 20px; text-align:left;
 				font-weight:normal;
+				color:#000;
 	}
 			
 	#instrumentlist li {		
@@ -190,12 +192,13 @@
 				clear:both;
 				width:100%;
 				font-size:1em;		
-				padding-top:10px;
+				padding:20px 0;
+				
 	}	
 	
-	
+/*	
 	#instrumentlist li:nth-child(even) { background: #CCC;}
-	#instrumentlist li:nth-child(odd) { background: #FFF;}
+	#instrumentlist li:nth-child(odd) { background: #FFF;} */
 
 	
 	article, aside, details, figcaption, figure, main
@@ -245,6 +248,20 @@
 		
 /**   SONG OVERVIEW      ** TODO-fix textarea!
 -------------------------------------------------------------------*/
+#songOverview h1 {
+	line-height:25px;
+	padding:10px;
+	display:block;
+	margin-top:-5px;
+}
+#instrumentBreadcrum {
+				padding:10px; 
+				line-height:25px;
+				width:100%;
+				color:#E95D39;
+				font-weight:bold;
+}
+
 #textbox {
 	background: url('images/white.png') center center no-repeat; /* This ruins default border */
 	background:#EBC148;
@@ -259,8 +276,78 @@
 	border-radius:20px;
 }
 
+	/**    ERRORMESSAGES       **
+-------------------------------------------------------------------*/
+.errorMessage {
+		padding-bottom:5px;
+		font-weight:bold;
+		color:red;
+		clear:both;
+	}
+	
+	
+	/**    HOMEPAGE       **
+-------------------------------------------------------------------*/	
+	#signUp, #login {
+	
+				display:block;
+				float:right;
+				width:250px;
+				font-size:1.6em;
+				text-align:center;
+				padding:10px 20px;
+				padding-right:0px;
+				padding-left: 0px;
+				margin-right:70px;
+				color:#FFF;
+				background:#E95D39;
+				border-radius:5px;
+				line-height:30px;
+				font-weight:bold;
+	}
 
-
+	#login { 	
+				clear:right;
+				background:#E95D39;
+				margin-top: 20px;
+				line-height:10px;
+				font-size:1em;
+	}
+	
+	/**    LOGIN      **
+-------------------------------------------------------------------*/	
+	#loginView {
+		
+				max-width:350px;
+				
+	}
+	
+	#loginView h2 {
+		
+				max-width:350px;
+				
+	}
+	#loginView p {
+				font-size:1.3em;
+				line-height:30px;
+	}
+	
+	#loginView input{
+				float:none;
+	}
+	
+	#loginView .checkbox {
+		float:left;
+		clear:left;
+		height:30px;
+		width:35px;
+		margin-top:20px;
+		
+	}
+	
+	#loginView .checkbox:focus {	
+		border:none;
+	}
 	
 	/**    INPUTS       **
 -------------------------------------------------------------------*/
@@ -277,6 +364,17 @@
 	}
 	input:focus {
 	border: 1px solid #333;
+	}
+	
+	.submit {
+				background:#E95D39;
+				font-size:1.3em;
+				padding-left:10px;
+				border-radius:10px;
+				border:none;
+				outline:none;
+				color:#FFF;
+				font-family:"Georgia", sans-serif;
 	}
 
 	.LoginBox {
@@ -306,11 +404,7 @@
 		line-height:17px;
 	}
 	
-	.errorMessage {
-		padding-bottom:5px;
-		font-weight:bold;
-		color:red;
-	}
+	
 	
 	.textbox {
 		padding:5px;

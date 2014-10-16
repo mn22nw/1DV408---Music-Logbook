@@ -43,3 +43,44 @@ SQLSTATE[42S22]: Column not found: 1054 Unknown column 'username' in 'where clau
 SQLSTATE[42S22]: Column not found: 1054 Unknown column 'instrumentIDFK' in 'where clause'
 SQLSTATE[42S22]: Column not found: 1054 Unknown column 'memberid' in 'where clause'
 SQLSTATE[42S22]: Column not found: 1054 Unknown column 'userID' in 'where clause'
+SQLSTATE[HY000]: General error
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'instrumentIDFK' cannot be null
+
+
+
+
+
+
+
+test
+
+
+
+
+
+
+
+
+say whaat
+say whaat
+say whaat
+say whaat
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+should be here!
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'musiclogbook.user_labb4' doesn't exist
+Felaktigt användarnamn och/eller lösenord.

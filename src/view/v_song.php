@@ -7,7 +7,12 @@ class SongView {
 	public static $getLocation = 'song';
 	
 	private static $name = 'name';
-	private static $instrumentUnique = 'instrumentUnique';
+	private static $instrumentID = 'instrumentID';
+	private $sessionHelper;
+	
+	function __construct() {
+		$this->sessionHelper = new \helper\SessionHelper();
+	}
 	
 	/**
 	 * Populate a song model with information from a view
@@ -37,14 +42,15 @@ class SongView {
 	 * 
 	 * @return String HTML
 	 */
-	public function getForm(\model\Instrument $owner) { // TODO - fixa song med dropdown etc
-		$instrumentUnique = $owner->getInstrumentID();   
+	public function getForm(\model\Instrument $owner) { 
+		$instrumentID = $owner->getInstrumentID();   
 		
 		$html = "<h1>Add song to ". $owner->getName()."</h1>";
 		$html .= "<form action='?action=".NavigationView::$actionAddSong."' method='post'>";
-		$html .= "<input type='hidden' name='".self::$instrumentUnique."' value='$instrumentUnique' />";
+		$html .= "<input type='hidden' name='".self::$instrumentID."' value='$instrumentID' />";
 		$html .= "<input type='text' name='".self::$name."' />";
-		$html .= "<input type='submit' value='Add song' />";
+		$html .= "<input type='submit' value='Add song' class='submit'/>";
+		$html .= "<div class='errorMessage'><p>". $this->sessionHelper->getAlert() ."</p></div>";
 		$html .= "</form>";
 		
 		return $html;
@@ -64,12 +70,12 @@ class SongView {
 	
 	/**
 	 * Fetches owner unique ID of a song owner.
-	 * 
+	 * it is used when creating a new song
 	 * @return String
-	 */
-	public function getOwnerUnique() {
-		if (isset($_POST[self::$instrumentUnique])) {   // TODO - do I use this?!
-			return $_POST[self::$instrumentUnique];
+	 */ 
+	public function getOwner() {
+		if (isset($_POST[self::$instrumentID])) {   
+			return $_POST[self::$instrumentID];
 		}
 		return NULL;
 	}
@@ -78,14 +84,12 @@ class SongView {
 	 * 
 	 * @return String HTML
 	 */
-	public function show(\model\Song $song) {
+	public function show(\model\Song $song, \model\Instrument $instrument) {
 			
-	//$view = new \view\NavigationView();  // TODO fick bred crums button bass
-		
-		// RENDER THE 'MENU' with songs 
-		//$menu = $view->getInstrumentButton($instrument);
-		  
-		$ret = '<h1>' . $song->getName() . '</h1>';
+		$view = new \view\NavigationView();  // TODO fix bread crums button bass
+		$ret  = "<div id='songOverview'>";
+		$ret .=  $view->getInstrumentBreadCrum($instrument);
+		$ret .= '<h1>' . $song->getName() . '</h1>';
 		
 		//delete-button
 		$ret .= "<a href='?".NavigationView::$action."=".NavigationView::$actionDeleteSong."&amp;".self::$getLocation."=" . 
@@ -99,6 +103,7 @@ class SongView {
 					<textarea id="textbox" name="textarea">'. htmlspecialchars( $song->getNotes()).'</textarea>
 					<input type="submit" value="Save" id="edit">
 				</form>					
+			</div> 
 			</div>';
 		
 		//

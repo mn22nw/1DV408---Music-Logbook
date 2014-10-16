@@ -1,9 +1,11 @@
 <?php
   namespace helper;
 
-  class Misc {
+  class SessionHelper {
     private static $sessionAlert = "sessionAlert";
 	public static $instrumentID = "instrumentID";    
+	private static $sessionName = 'name';
+	private static $ceatedUsername = "ceatedUsername";  
 
     /**
       * Get an alert from the session alert system
@@ -34,6 +36,27 @@
       return true;
     }
 
+// FUNCTIONS FOR USER LOGIN / REGISTER //
+
+public function getCreatedUsername() {
+      if (isset($_SESSION[self::$ceatedUsername])) {
+        $ret = $_SESSION[self::$ceatedUsername];
+        unset($_SESSION[self::$ceatedUsername]);
+      } else {
+        $ret = "";
+      }
+
+      return $ret;
+    }
+
+	 public function setCreatedUsername($string) {
+      $_SESSION[self::$ceatedUsername] = $string;
+      return true;
+    }
+
+
+// FUNCTIONS FOR INSTRUMENT AND SONG //
+
 	public function getInstrumentID() {
       if (isset($_SESSION[self::$instrumentID])) {
         $ret = $_SESSION[self::$instrumentID];
@@ -55,11 +78,37 @@
        unset($_SESSION[self::$instrumentID]);
     }
 
+	
+	public function setName($string) {
+      $_SESSION[self::$sessionName] = $string;
+      return true;
+    }
+
+
+	/**
+      * Get an name from the session
+      * if name exists delete it from the session after.
+      *
+      * @return string - The message
+      */
+    public function getName() {
+      if (isset($_SESSION[self::$sessionName])) {
+        $ret = $_SESSION[self::$sessionName];
+        unset($_SESSION[self::$sessionName]);
+      } else {
+        $ret = "";
+      }
+
+      return $ret;
+    }
+
+
+//FUNCTIONS TO MAKE SAFE AND ENCRYPT //
 
     /**
-      * Makes the param safe from html and stuff...
+      * Makes the param safe from html etc
       *
-      * @param string $var - The dirty string
+      * @param string $var - The 'dirty' string
       * @return string - The cleaned up string
       */
     public function makeSafe($var) {
@@ -72,7 +121,7 @@
     }
 
     /**
-      * Generate a unique-ish identifier
+      * Generate a unique identifier
       *
       * @return string - The identifier encoded in sha1
       */

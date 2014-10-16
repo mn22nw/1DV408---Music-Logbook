@@ -2,10 +2,10 @@
 
 namespace view;
 /**
- * @todo Refactor together with SongView and InstrumentView.
+ * TODO Refactor together with SongView and InstrumentView.
  * Some things might be better off in other views.
  */
-class RepertoireView {    // TODO - rename repertoire!
+class RepertoireView {    
 	private static $getLocation = "instrument"; 
 	
 	public static $mainInstrument = 'mainInstrument';
@@ -18,7 +18,7 @@ class RepertoireView {    // TODO - rename repertoire!
 		return NULL;
 	}
 
-	public function visitorHasChosenRepertoire() {
+	public function visitorHasChosenRepertoire() {  //TODO not used!
 		if (isset($_GET[self::$getLocation])) 
 			return true;
 
@@ -42,31 +42,35 @@ class RepertoireView {    // TODO - rename repertoire!
 		$checked="";
 				
 		$ret = "<h1>My Instruments</h1>";
-		$ret .= "<p class='chooseInstrument'>Choose main instrument:<p>";
-		$ret .= "<form method='post' action='?action=".NavigationView::$actionSetMainInstrument."'>";
-		$ret .= "<ul id='instrumentlist'>";
 		
-		foreach ($repertoireOwners->toArray() as $instrument) {//Changed this to work with new navigation view.
+		if ($mainInstrumentID == 0) {
+			$ret .="You have no instruments yet!";
+		}else {
+			$ret .= "<p class='chooseInstrument'>Choose main instrument:<p>";
+			$ret .= "<form method='post' action='?action=".NavigationView::$actionSetMainInstrument."'>";
+			$ret .= "<ul id='instrumentlist'>";
 			
-			$instrumentID = $instrument->getInstrumentID();
-			$ret .= "<li><a href='?action=".NavigationView::$actionShowInstrument."&amp;".self::$getLocation."=" . 
-					urlencode($instrument->getInstrumentID()) ."'>" .
-					$instrument->getName();
-			$ret .= "<p>Number of songs: " . count($instrument->getSongs()->toArray())."</p><p> Total instument pracice time: ? </p></a>";
+			foreach ($repertoireOwners->toArray() as $instrument) {//Changed this to work with new navigation view.
+				
+				$instrumentID = $instrument->getInstrumentID();
+				$ret .= "<li><a href='?action=".NavigationView::$actionShowInstrument."&amp;".self::$getLocation."=" . 
+						urlencode($instrument->getInstrumentID()) ."'>" .
+						$instrument->getName();
+				$ret .= "<p>Number of songs: " . count($instrument->getSongs()->toArray())."</p><p> Total instument pracice time: ? </p></a>";
+				
+				//decides which radiobutton that is selected
+				if ($instrumentID === $mainInstrumentID) {
+					$checked = "checked='checked'";
+				}else {
+					$checked = "";
+				}
+				
+				$ret .= "<input type='radio' name='".self::$mainInstrument."' value='".$instrument->getInstrumentID() . "'" . $checked ."/></li> <hr />"; 
+				
+			}; 
 			
-			//decides which radiobutton that is selected
-			if ($instrumentID === $mainInstrumentID) {
-				$checked = "checked='checked'";
-			}else {
-				$checked = "";
-			}
-			
-			$ret .= "<input type='radio' name='".self::$mainInstrument."' value='".$instrument->getInstrumentID() . "'" . $checked ."/></li> "; 
-			
-		}; 
-		
-		$ret .= "</ul></form>";
-		
+			$ret .= "</ul></form>";
+		}
 		return $ret;
 	}
 	

@@ -7,6 +7,11 @@ namespace view;
 class NavigationView {
 	public static $action = 'action';
 	public static $id = 'id';
+	public static $actionDefault = 'default';
+	
+	//Register And Login
+	public static $actionLogin = 'login';
+	public static $actionRegister = 'register';
 	
 	//Instrument
 	public static $actionAddInstrument = 'add';   
@@ -41,6 +46,19 @@ class NavigationView {
 		return $html;
 	}
 	
+	/**
+	 * Creates the HTML needed to display the menu for login / home default page
+	 * 
+	 * @return String HTML
+	 */
+	public function showLoginMenu() { 	
+		$html = "<li><a href='?".self::$action."=".self::$actionLogin."'>Login</a></li>";  
+		$html .= "<li><a href='?".self::$action."=".self::$actionRegister."'>Register</a></li>"; 
+		return $html;
+	}	
+	
+	
+	
 	//takes parameter containg html
 	public function setSongMenu($songMenu) {
 		$this->songMenu = $songMenu;
@@ -49,7 +67,7 @@ class NavigationView {
 	//return logo that links to homepage
 	public static function getLogo(){
 		$html = "<div id='logo'>";
-		$html .= "<a href='?".self::$action."=".self::$actionShowAll."'><img src='images/logo.png' alt='logo' />
+		$html .= "<a href='?".self::$action."=".self::$actionDefault."'><img src='images/logo.png' alt='logo' />
 		</a>";  
 		return $html;
 	}
@@ -76,7 +94,7 @@ class NavigationView {
 	 * 
 	 * @return String
 	 */
-	public static function getId() {
+	public static function getId() {   // TODO is this used? maybe remove
 		if (isset($_GET[self::$id])) {
 			return $_GET[self::$id];
 		}
@@ -109,15 +127,31 @@ class NavigationView {
 		return $button;
 	}
 	
-	
-	/**
-	 * Redirect to a instrument page.
-	 * 
-	 * @todo Move to instrument view?
-	 * 
-	 * @param String $uniqueString unique key for the instrument.
-	 */
-	public static function RedirectToInstrument($uniqueString) {
-		header('Location: /' . \Settings::$ROOT_PATH. '/?'.self::$action.'='.self::$actionShowInstrument.' &amp;'. InstrumentView::$getLocation.'='.$uniqueString);
+	public static function getInstrumentBreadCrum($instrument) {
+		$button ="<a href='?action=".NavigationView::$actionShowInstrument."&amp;".InstrumentView::$getLocation."=" . 
+					urlencode($instrument->getInstrumentID()) ."'id='instrumentBreadcrum'>" .
+					$instrument->getName()."</a>";
+		return $button;	
 	}
+	
+	//Redirect to a instrument page.
+	public static function RedirectToInstrument($instrumentID) {
+		header('Location: /' . \Settings::$ROOT_PATH . '/?'.self::$action.'='.self::$actionShowInstrument.'&'. InstrumentView::$getLocation. '='.$instrumentID);
+	}
+	
+	//Redirect to a song page.
+	public static function RedirectToSong($songID) {
+		header('Location: /' . \Settings::$ROOT_PATH . '/?'.self::$action.'='.self::$actionShowSong.'&'. SongView::$getLocation. '='.$songID);
+	}  
+	
+	//Redirect to add song page.
+	public static function RedirectToAddSong() {
+		header('Location: /' . \Settings::$ROOT_PATH . '/?'.self::$action.'='.self::$actionAddSong);
+	} 
+
+	//Redirect to add song page.
+	public static function RedirectToAddInstrument() {
+		header('Location: /' . \Settings::$ROOT_PATH . '/?'.self::$action.'='.self::$actionAddInstrument);
+	} 
+	
 }

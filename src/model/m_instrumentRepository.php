@@ -4,11 +4,11 @@ namespace model;
 require_once ('./src/model/m_instrument.php');
 require_once ('./src/model/m_instrumentList.php');
 require_once ('./src/model/base/Repository.php');
-require_once("src/helper/Misc.php");
+require_once("src/helper/SessionHelper.php");
 
 class InstrumentRepository extends base\Repository {
 	private $instruments;
-	private $misc;
+	private $sessionHelper;
 	
 	//DB fields
 	private static $instrumentID = 'instrumentID';
@@ -16,7 +16,7 @@ class InstrumentRepository extends base\Repository {
 	private static $userID = 'userID';
 	private static $username ='username';
 	private static $userIDFK = 'userIDFK';
-	private static $instrumentIDFK = 'instrumentIDFK';
+	public static $instrumentIDFK = 'instrumentIDFK';
 	private static $songID = 'songID';
 	
 	//DB tables
@@ -27,14 +27,15 @@ class InstrumentRepository extends base\Repository {
 	public function __construct() {
 		$this -> dbTable = 'instrument';
 		$this -> instruments = new InstrumentList();
-		$this->misc = new \helper\Misc();
+		$this->sessionHelper = new \helper\SessionHelper();
 	}
 	
-	public function add(Instrument $instrument, $username) {  // TODO -NEED TO ADD TO THE RIGHT USER!
+	public function add($instrumentName, $username) {  // TODO -NEED TO ADD TO THE RIGHT USER!
 	
-		try { 
-				$db = $this->connection();
-				$db->beginTransaction();
+
+		try {
+			 	$db = $this->connection();
+				$db->beginTransaction();  // TODO- might not need begin/end transaction
 				
 				// SELECT (userID from usertable) //
 				$sql= "SELECT `". self::$userID . "` FROM `". self::$userTable . "` WHERE `". self::$username . "` = '".$username. "' LIMIT 1";
@@ -43,28 +44,34 @@ class InstrumentRepository extends base\Repository {
 				$result= $query->fetch(\PDO::FETCH_ASSOC);
 				// END SELECT
 				
-				// INSERT (Instrument into database) //
+				
+				//check if song already exists in database
+				if ($this->nameAlreadyExists($instrumentName, $result[self::$userID])) {
+					$this->sessionHelper->setAlert("You already have an instrument called '". $instrumentName . "'. </p><p>Please choose a new name.");	
+					return null;	
+				}
+				
+				//everything ok, add instrument!
+				
+				// INSERT (instrument into database) //
 				$sql = "INSERT INTO $this->dbTable (". self::$instrumentID . ", " . self::$name . " , " . self::$userIDFK . ") VALUES (  ?, ?, ?)";
-				$params = array("", ucfirst($instrument->getName()), $result[self::$userID]);
+				$params = array("", strtoupper($instrumentName), $result[self::$userID]);
 		
 				$query = $db->prepare($sql);
 				$query->execute($params);
 				// END INSERT //
 				
+				$instrumentID = $db->lastInsertId(); 
 				$db->commit();  //commits the transaction if it is succesfull   
-					
-				//gets instrumentID from the newly created instrument  
-				//TODO- is this necessary?! o.0 -- MAYBE IF you get to choose default instrument in the list (to then save in db)
-				//-but it should be in the toList instead!
 				
-				$instrumentID = $this->getInstrumentID($instrument -> getName(), $result[self::$userID]);
-				$instrument->setInstrumentID($instrumentID);
+				
+				return $instrumentID;		
 		}
-				catch(Exception $e){  // catch to be able to do a rollback!
+		
+		catch(Exception $e){  // catch to be able to do a rollback!
 				    $db->rollback();
 				    throw new \Exception ($e->getMessage());
 				}
-		
 	}
 
 	public function get($instrumentID) {  // TODO- denna är när man klickat pa en song
@@ -97,7 +104,7 @@ class InstrumentRepository extends base\Repository {
 		return null;
 	}
 
-	public function getInstrumentID($name, $username) {
+	public function getInstrumentID($name, $username) {  //TODO check if used!
 		$db = $this -> connection();
 
 		$sql = "SELECT * FROM $this->dbTable WHERE " . self::$name . " = ? AND " . self::$userIDFK . "= ?";
@@ -114,10 +121,13 @@ class InstrumentRepository extends base\Repository {
 
 	public function delete(\model\Instrument $instrument, $username) {
 			
-		// TODO - delete all songs from instrument FIRST!
-		
 		$db = $this -> connection();
-
+		
+		//delete songs from songtable
+		$sql = "DELETE * FROM". self::$songTable. "WHERE" . self::$instrumentID . "= ?";  
+		$params = array($instrument -> getInstrumentId());
+		
+		//delete instrument from instrument table
 		$sql = "DELETE FROM $this->dbTable WHERE " . self::$instrumentID . "= ?";
 		$params = array($instrument -> getInstrumentId());
 
@@ -126,8 +136,8 @@ class InstrumentRepository extends base\Repository {
 		
 		// unset and set session and get main instrument id from user
 		$mainInstrument = $this->getMainInstrument($username);
-		$this->misc->unsetSession();
-		$this->misc->setInstrumentID($mainInstrument);
+		$this->sessionHelper->unsetSession();
+		$this->sessionHelper->setInstrumentID($mainInstrument);
 	}
 
 	public function toList() {
@@ -177,6 +187,20 @@ class InstrumentRepository extends base\Repository {
 		}
 	}
 	
+	public function nameAlreadyExists($instrumentName, $userID) {
+		
+			$db = $this->connection();
+			$sql = "SELECT * FROM $this->dbTable WHERE `" .self::$name . "` = ? AND `" .self::$userIDFK . "` = ?";
+			$params = array($instrumentName, $userID );
+			$query = $db->prepare($sql);
+			$query->execute($params);
+			
+			if ($query->rowCount() > 0) 
+        		return true;
+
+			return false;
+	}
+
 	/**
 	 * @return int
 	 */
@@ -220,8 +244,8 @@ class InstrumentRepository extends base\Repository {
 				$db->commit();  //commits the transaction if it is succesfull   
 				
 				//unsets and sets session with instrumentID	
-				$this->misc->unsetSession();
-				$this->misc->setInstrumentID($instrumentID);
+				$this->sessionHelper->unsetSession();
+				$this->sessionHelper->setInstrumentID($instrumentID);
 		}
 				catch(Exception $e){  // catch to be able to do a rollback!
 				    $db->rollback();

@@ -9,12 +9,14 @@ require_once("./src/view/v_song.php");
 require_once("./src/model/m_instrumentList.php");
 require_once('./src/model/m_instrumentRepository.php');
 require_once('./src/model/m_songRepository.php');
-require_once('./src/helper/Misc.php');
+require_once('./src/helper/sessionHelper.php');
+require_once('./src/model/m_validation.php');
 /**
  * Controller for user related application flow.
  */
 class InstrumentController {
-	private $misc;		
+	private $sessionHelper;
+	private $validation;		
 	//model
 	private $instrumentRepository; 
 	private $songRepository;
@@ -32,7 +34,8 @@ class InstrumentController {
 		$this->instrumentRepository = new \model\InstrumentRepository();
 		$this->songRepository = new \model\SongRepository();
 		$this->songView = new \view\SongView();
-		$this->misc = new \helper\Misc();
+		$this->sessionHelper = new \helper\SessionHelper();
+		$this->validation = new \model\Validation();
 	}
 
 	/**
@@ -43,55 +46,37 @@ class InstrumentController {
 		$instrumentID = $this->repertoireView->getInstrumentID();  //gets value from url
 		
 		//save instrumentID in session
-		$this->misc->setInstrumentID($instrumentID); 
+		$this->sessionHelper->setInstrumentID($instrumentID); 
 		
-		$instrumentID = $this->misc->getInstrumentID();
+		$instrumentID = $this->sessionHelper->getInstrumentID($instrumentID);
 		
-		if ($this->repertoireView->visitorHasChosenRepertoire() == false) { //<--this is also used after creating a song
-			
-			$owner = $this->instrumentRepository->get($instrumentID);    
-
-		} else {
-				
-			//TODO - need to set song id here?
-			$owner = $this->instrumentRepository->get($instrumentID);   //TODO -if and else do the same thing! remove! 
+		$owner = $this->instrumentRepository->get($instrumentID);   //TODO -if and else do the same thing! remove! 
 	  
-		} 
-		
 		return $this->instrumentView->show($owner);  
 	}
 
 	public function showSongMenu () { 
 			
-			//$this->misc->setInstrumentID(7);	//it unsets somewhere??
-			$instrumentID = $this->misc->getInstrumentID();
-			var_dump($instrumentID)	;
-					
-			$owner = $this->instrumentRepository->get($instrumentID);  
-			
-			return $this->instrumentView->showMenu($owner); 
+			//$this->sessionHelper->setInstrumentID(7);	//it unsets somewhere??
+			$instrumentID = $this->sessionHelper->getInstrumentID();
 
-			 
+			if (empty($instrumentID))	
+				return "";	 //TODO get from database
+			
+			$owner = $this->instrumentRepository->get($instrumentID);  
+				
+			return $this->instrumentView->showMenu($owner); 	 
 	}
 	
 	public function showSong() {
-		if ($this->instrumentView->visitorHasChosenSong() == false) {
-			
-			//TODO - this is used after creating a something for a song hmm=! 
-			
-			$song = $this->songRepository->get($this->songView->getSongID());    
-	
-			return $this->songView->show($song);
-
-		} else {
 			
 			$song = $this->songRepository->get($this->songView->getSongID());  
-
 			
-			return $this->songView->show($song);    
-		}
+			$instrumentID = $this->sessionHelper->getInstrumentID(); 
+			$instrument = $this->instrumentRepository->get($instrumentID);
+
+			return $this->songView->show($song, $instrument); //instrument is needed in songView to show breadcrum
 	}	
-	
 	
 	
 	
@@ -116,28 +101,36 @@ class InstrumentController {
 	 */
 	public function addInstrument() {
 		if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
-			$newInstrument = $this->instrumentView->getFormData();    // gets the input from the form
+			$name = $this->instrumentView->getFormData();    // gets the name input from the form
 			
-			//TODO - validate input!!
 			
-			/*while ($this->instrumentRepository->toCompactList()->contains($newInstrument)) { TODO - make another solution!
-				$newInstrument->setUnique();   //sets unique if to list already contains
-			}*/
+			//Only add instrument if validation is true!
+			if($this->validation->validateName($name)) {
+				
+				$username = 'miaaim';  // TODO - get username from session??!
+				
+				//adds instrument to database 
+				$instrumentID = $this->instrumentRepository->add($this->sessionHelper->getName(), $username);  
+				
+				if($instrumentID == null) {	
+				\view\NavigationView::RedirectToAddInstrument();
+					
+				}else {
+				\view\NavigationView::RedirectToInstrument($instrumentID); 
+				}
+				
+				
+			}else{
+				return $this->instrumentView->getForm();
+			}	
 			
-			// TODO - get username from session??!
-			$username = 'miaaim';
-			
-			//adds instrument to database
-			$this->instrumentRepository->add($newInstrument, $username);  
-			
-			\view\NavigationView::RedirectHome(); //TODO -Redirect to newly created instrument?
 		} else {
 			return $this->instrumentView->getForm();
 		}
 	}
 	
 	/**
-	 * Controller function to add a project.
+	 * Controller function to add a song.
 	 * Function returns HTML or Redirect.
 	 * 
 	 * @TODO: Move to an own controller?
@@ -145,16 +138,29 @@ class InstrumentController {
 	 * @return Mixed
 	 */
 	public function addSong() {
+		
+		$instrumentID = $this->sessionHelper->getInstrumentID();
 		$view = new \view\SongView();
+	
 		if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
-			$song = $view->getSong();			
-			$song->setOwner($this->instrumentRepository->get($view->getOwnerUnique()));
 			
-			$this->songRepository->add($song);
-			\view\NavigationView::RedirectToInstrument($view->getOwnerUnique());
-		} else {
-			return $view->getForm($this->instrumentRepository->get(\view\NavigationView::getId()));
+			//Only add song if validation is true!
+			if($this->validation->validateName($view->getName())) {
+				$song = $view->getSong();		
+				$instrumentID =	$view->getOwner();
+				$song->setOwner($this->instrumentRepository->get($instrumentID));
+				
+				$songID = $this->songRepository->add($song);
+			
+				if($songID == null) {	
+					\view\NavigationView::RedirectToAddSong();
+				}else {
+					\view\NavigationView::RedirectToSong($songID);
+				}
+			}
 		}
+		return $view->getForm($this->instrumentRepository->get($instrumentID));
+	
 	}
 	
 	public function setMainInstrument() {
@@ -170,7 +176,7 @@ class InstrumentController {
 	
 	public function deleteInstrument() {
 		
-			$instrumentID = $this->misc->getInstrumentID();	
+			$instrumentID = $this->sessionHelper->getInstrumentID();	
 			$instrument = $this->instrumentRepository->get($instrumentID);  
 			
 			if (true){   // TODO - fixa confirm !
@@ -179,37 +185,28 @@ class InstrumentController {
 				$this->instrumentRepository->delete($instrument , "miaaim"); //TODO get real user!
 				
 				\view\NavigationView::RedirectHome();
-		  	 }
-		   else{
-		    // do nothing ?
-		    // \view\NavigationView::RedirectHome(); //TODO -Redirect to instrument!?
+				
+		  	 }else {
+		   		 \view\NavigationView::RedirectToInstrument($instrumentID);  
 		   }		
 	}
 	
 	public function deleteSong() {
 		
-		/*
-		 $member = $this->memberView->getOwner();  
-		$boat = $this->boatRepository->get($this->memberView->getBoat());  
-		
-		$this->boatRepository->delete($boat); 
-	
-		\view\NavigationView::RedirectToMember($member);*/
-		
-		
-			$instrumentID = $this->misc->getInstrumentID();	
+			$instrumentID = $this->sessionHelper->getInstrumentID();	
 			$songID =$this->instrumentView->getSong(); 
 			
 			if (true){   // TODO - fixa confirm !
 
-				//deletes instrument from database
+				//deletes song from database
 				$this->songRepository->delete($songID, $instrumentID); 
 				
-				\view\NavigationView::RedirectToInstrument($instrumentID);
-		  	 }
-		   else{
-		    // do nothing ?
-		    // \view\NavigationView::RedirectHome(); //TODO -Redirect to instrument!?
+				$this->sessionHelper->setAlert("Song was successfully deleted"); 
+
+				\view\NavigationView::RedirectToInstrument($instrumentID);  
+				
+		  	 }else{
+		    	\view\NavigationView::RedirectToSong($songID);  
 		   }
 	}
 }

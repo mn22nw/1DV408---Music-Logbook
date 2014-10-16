@@ -2,24 +2,15 @@
 namespace view;
 
 class InstrumentView {
-	public static $getLocation = "instrument"; 
+	public	static $getLocation = "instrument"; 
 	private static $getSong= "song"; 
 	private static $name = 'name';
+	private $sessionHelper = 'sessionHelper'; 
 	
-	
-	public function visitorHasChosenInstrument() {
-		if (isset($_GET[self::$getLocation])) 
-			return true;
-
-		return false;
-	} 
-	
-	public function visitorHasChosenSong() {
-		if (isset($_GET[SongView::$getLocation])) 
-			return true;
-
-		return false;
+	public function __construct() {
+		$this->sessionHelper = new \helper\SessionHelper();
 	}
+
 	
 	public function getSong() {
 		if (isset($_GET[self::$getSong])) {
@@ -30,14 +21,11 @@ class InstrumentView {
 	}
 	
 	/**
-	 * Populate a new instrument model from form data.
-	 * @todo Maybe put this in a controller? Create new instrument model that is dumber?
-	 * 
-	 * @return \model\Instrument
+	 * @return string (name)
 	 */
 	public function getFormData() {
 		if (isset($_POST[self::$name])) {
-			return new \model\Instrument($_POST[self::$name]);
+			return ($_POST[self::$name]);
 		}
 		
 		return NULL;
@@ -55,9 +43,11 @@ class InstrumentView {
 		$html .= "<form method='post' action='?action=".NavigationView::$actionAddInstrument."'>";
 		$html .= "<label for='" . self::$name . "'>Name: </label>";
 		$html .= "<input type='text' name='" . self::$name . "' placeholder='' value='' maxlength='50'><br />";
-		$html .= "<input type='submit' value='Add Instrument' />";
+		$html .= "<input type='submit' value='Add Instrument' class='submit' />";
 		$html .= "</form>";
+		$html .= "<div class='errorMessage'><p>".$this->sessionHelper->getAlert() ."</p></div>";
 		$html .= "</div>";
+		
 		
 		return $html;
 	}
@@ -107,11 +97,14 @@ class InstrumentView {
 		$html .= "<div id='songList'>";
 		
 		// add-song button
-		$html .= "<a href='?".NavigationView::$action."=".NavigationView::$actionAddSong."&amp;".NavigationView::$id."= ".$instrument->getInstrumentID();
-		$html .= " '>Add song</a>";
+		$html .= "<a href='?".NavigationView::$action."=".NavigationView::$actionAddSong."&amp;".self::$getLocation."=" . 
+					urlencode($instrument->getInstrumentID())."'>Add song</a>";;
 		
 		//TODO Remove <br />
 		$html .="<br /><br /><h2> Monthly overview</h2>";
+		
+		//set feedback message
+		$html.="<p>" . $this->sessionHelper->getAlert(). "</p>";
 		
 		if (empty($songArray)) 
 		$html .= "<p>You have no songs yet.</p> <br /></div>";
