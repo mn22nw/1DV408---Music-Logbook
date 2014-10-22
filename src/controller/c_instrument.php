@@ -8,7 +8,6 @@ require_once("./src/view/v_instrument.php");
 require_once("./src/view/v_song.php");
 require_once("./src/model/m_instrumentList.php");
 require_once('./src/model/m_instrumentRepository.php');
-require_once('./src/model/m_songRepository.php');
 require_once('./src/helper/sessionHelper.php');
 require_once('./src/model/m_validation.php');
 /**
@@ -19,11 +18,10 @@ class InstrumentController {
 	private $validation;		
 	//model
 	private $instrumentRepository; 
-	private $songRepository;
 	//view
 	private $instrumentView;
 	private $repertoireView;
-	private $songView;
+	private $navigationView;
 
 	/**
 	 * Instantiate required views and required repositories.
@@ -31,9 +29,8 @@ class InstrumentController {
 	public function __construct() {
 		$this->repertoireView = new \view\RepertoireView(); //Still required in class scope?
 		$this->instrumentView = new \view\InstrumentView(); //Still required in class scope?
+		$this->navigationView = new \view\NavigationView();
 		$this->instrumentRepository = new \model\InstrumentRepository();
-		$this->songRepository = new \model\SongRepository();
-		$this->songView = new \view\SongView();
 		$this->sessionHelper = new \helper\SessionHelper();
 		$this->validation = new \model\Validation();
 	}
@@ -57,34 +54,24 @@ class InstrumentController {
 
 	public function showSongMenu () { 
 			
-			//$this->sessionHelper->setInstrumentID(7);	//it unsets somewhere??
-			$instrumentID = $this->sessionHelper->getInstrumentID();
-
-			if (empty($instrumentID)){
-					
-				$instrumentID = $this->instrumentRepository->getMainInstrument("miaaim"); //TODO get real username
-				
-				if ($instrumentID == 0)
-				return "";	
-				
+			//$this->sessionHelper->setInstrumentID(6);	//it unsets somewhere??
+			$instrumentID = $this->sessionHelper->getInstrumentID();  //TODO change maininstrument to0 if user deletes it!
+			
+			$sessionUsername = $this->sessionHelper->getUsername();
+			
+			if (empty($instrumentID)){		
+				$instrumentID = $this->instrumentRepository->getMainInstrument($this->sessionHelper->getUsername()); //TODO get real username	
 			}	
-				    //TODO get from database
+			
+			if ($instrumentID == 0)
+				return "";	
 			
 			$owner = $this->instrumentRepository->get($instrumentID);  
 				
-			return $this->instrumentView->showMenu($owner); 	 
+			$this->navigationView->showSongMenu($owner); 	
+			
+			return $this->navigationView->showMenuLoggedIn(); 
 	}
-	
-	public function showSong() {
-			
-			$song = $this->songRepository->get($this->songView->getSongID());  
-			
-			$instrumentID = $this->sessionHelper->getInstrumentID(); 
-			$instrument = $this->instrumentRepository->get($instrumentID);
-
-			return $this->songView->show($song, $instrument); //instrument is needed in songView to show breadcrum
-	}	
-	
 	
 	
 	/**
@@ -93,7 +80,8 @@ class InstrumentController {
 	 * @return String HTML
 	 */
 	public function showAllInstruments() {
-		$mainInstrumentID = $this->instrumentRepository->getMainInstrument("miaaim"); //TODO get real user
+		
+		$mainInstrumentID = $this->instrumentRepository->getMainInstrument($this->sessionHelper->getUsername()); 
 		
 		return $this->repertoireView->showAllInstruments($this->instrumentRepository->toList(), $mainInstrumentID);  
 	}
@@ -113,11 +101,9 @@ class InstrumentController {
 			
 			//Only add instrument if validation is true!
 			if($this->validation->validateName($name)) {
-				
-				$username = 'miaaim';  // TODO - get username from session??!
-				
+								
 				//adds instrument to database 
-				$instrumentID = $this->instrumentRepository->add($this->sessionHelper->getName(), $username);  
+				$instrumentID = $this->instrumentRepository->add($this->sessionHelper->getName(), $this->sessionHelper->getUsername());  
 				
 				if($instrumentID == null) {	
 				\view\NavigationView::RedirectToAddInstrument();
@@ -136,47 +122,13 @@ class InstrumentController {
 		}
 	}
 	
-	/**
-	 * Controller function to add a song.
-	 * Function returns HTML or Redirect.
-	 * 
-	 * @TODO: Move to an own controller?
-	 * 
-	 * @return Mixed
-	 */
-	public function addSong() {
-		
-		$instrumentID = $this->sessionHelper->getInstrumentID();
-		$view = new \view\SongView();
-	
-		if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
-			
-			//Only add song if validation is true!
-			if($this->validation->validateName($view->getName())) {
-				$song = $view->getSong();		
-				$instrumentID =	$view->getOwner();
-				$song->setOwner($this->instrumentRepository->get($instrumentID));
-				
-				$songID = $this->songRepository->add($song);
-			
-				if($songID == null) {	
-					\view\NavigationView::RedirectToAddSong();
-				}else {
-					\view\NavigationView::RedirectToSong($songID);
-				}
-			}
-		}
-		return $view->getForm($this->instrumentRepository->get($instrumentID));
-	
-	}
-	
 	public function setMainInstrument() {
 		
 		$instrumentID = $this->repertoireView->getInstrumentIDfromRadioBtn();
 		
-		$this->instrumentRepository->updateMainInstrument($instrumentID, "miaaim"); //TODO get real user!
+		$this->instrumentRepository->updateMainInstrument($instrumentID, $this->sessionHelper->getUsername()); 
 			
-		\view\NavigationView::RedirectHome();
+		\view\NavigationView::RedirectToShowAllInstruments();
 		
 	}
 	
@@ -189,7 +141,7 @@ class InstrumentController {
 			if (true){   // TODO - fixa confirm !
 
 				//deletes instrument from database
-				$this->instrumentRepository->delete($instrument , "miaaim"); //TODO get real user!
+				$this->instrumentRepository->delete($instrument , $this->sessionHelper->getUsername()); 
 				
 				\view\NavigationView::RedirectHome();
 				
@@ -197,23 +149,5 @@ class InstrumentController {
 		   		 \view\NavigationView::RedirectToInstrument($instrumentID);  
 		   }		
 	}
-	
-	public function deleteSong() {
-		
-			$instrumentID = $this->sessionHelper->getInstrumentID();	
-			$songID =$this->instrumentView->getSong(); 
-			
-			if (true){   // TODO - fixa confirm !
 
-				//deletes song from database
-				$this->songRepository->delete($songID, $instrumentID); 
-				
-				$this->sessionHelper->setAlert("Song was successfully deleted"); 
-
-				\view\NavigationView::RedirectToInstrument($instrumentID);  
-				
-		  	 }else{
-		    	\view\NavigationView::RedirectToSong($songID);  
-		   }
-	}
 }

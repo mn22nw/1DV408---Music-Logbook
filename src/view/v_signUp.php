@@ -1,14 +1,15 @@
 <?php
 namespace view;
-  class Register {
+  class SignUp {
     private $model;
 	private $sessionHelper;
 	
-	private static $username = "Register::UserName";
-	private static $password = "Register::Password";
-	private static $repeatPw = "Register::repeatPw";
-	private static $registerBtn = "Register::registerBtn";
-	private static $getRegister = "register";
+	private static $username = "SignUp::UserName";
+	private static $password = "SignUp::Password";
+	private static $repeatPw = "SignUp::repeatPw";
+	private static $signUpBtn = "SignUp::signUpBtn";
+	private static $actionSignUp = "signUp";
+	private static $getAction = "action";
 	private $errorMessage = "";
 	private $unValue = "";
 
@@ -21,55 +22,56 @@ namespace view;
 		
 		$ret = "<h2>Sign Up</h2>";
 	
-		 $ret .= "<span class='alert'>" . $this->sessionHelper->getAlert() . "</span>";  //TODO ta bort ev strängberoende
-	      $ret .= "
-	  <form action='?" . self::$getRegister . "' method='post'>
-	  	<label for='" . self::$username . "'>Username</label>
-	    <input type='text' name='" . self::$username . "' placeholder='Username' value='$this->unValue' maxlength='30'>
-	    <br />
-	    <label for='" . self::$password . "'>Username</label>
-	    <input type='password' name='" . self::$password . "' placeholder='Password' value='' maxlength='30'>
-	    <br />
-	    <label for='" . self::$repeatPw . "'>Repeat password</label>
-	    <input type='password' name='" . self::$repeatPw . "' placeholder='Password' value='' maxlength='30'>
-	    <br />
-	    <input type='submit' value='Sign up' name='" . self::$registerBtn. "'>
-	  </form>
-	  <br />";
-	  //<a href='index.php'>back</a>";
+		$ret .= "<div id='signUpView'>";
+	    $ret .= "
+		  <form action='?" . self::$getAction . "=" . self::$actionSignUp ."' method='post'>
+		  	<label for='" . self::$username . "'>Username</label>
+		    <input type='text' name='" . self::$username . "' placeholder='Username' value='$this->unValue' maxlength='30'>
+		    <br />
+		    <label for='" . self::$password . "'>Username</label>
+		    <input type='password' name='" . self::$password . "' placeholder='Password' value='' maxlength='30'>
+		    <br />
+		    <label for='" . self::$repeatPw . "'>Repeat password</label>
+		    <input type='password' name='" . self::$repeatPw . "' placeholder='Password' value='' maxlength='30'>
+		    <br />
+		    <input type='submit' value='Sign up' name='" . self::$signUpBtn. "'>
+		  </form>";
+	   $ret .= "<div class='errorMessage'><p>".$this->sessionHelper->getAlert() ."</p></div>";
+	   $ret .= "</div><br />";
+	  //<a href='index.php'>back</a>"; TODO back buttons?
 
       return $ret;
 	}
 	
-	public function didUserPressRegister () {
-		if (isset($_GET[self::$getRegister]))
+	public function didUserPressSignUp () {
+		if (isset($_GET[self::$getSignUp]))
     {
         return true;   
 	}
 		return false;
 	}
 	
-	public function RegisterAttempt() {
-		if (isset($_POST[self::$registerBtn]))
+	public function SignUpAttempt() {
+		if (isset($_POST[self::$signUpBtn]))
 			return true;
 		return false;
 	}
 	
 	public function getUsernameInput(){
-		if($this->RegisterAttempt()) {		
+		if($this->SignUpAttempt()) {		
 					//makes input safe to use in the code
 			return $this->sessionHelper->makeSafe($_POST[self::$username]);
 		}
 	}
 	
 	public function getPasswordInput(){
-		if($this->RegisterAttempt()) {
+		if($this->SignUpAttempt()) {
 			return $this->sessionHelper->makeSafe($_POST[self::$repeatPw]);
 		}
 	}
 		
 	public function validateInput() {
-	  if ($this->RegisterAttempt()) {
+	  if ($this->SignUpAttempt()) {
 	  						
 	  	$un = $_POST[self::$username];
 		$pw = $_POST[self::$password];		

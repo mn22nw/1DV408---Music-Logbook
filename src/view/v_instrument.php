@@ -52,32 +52,7 @@ class InstrumentView {
 		return $html;
 	}
 	
-		/**
-	 * Creates the HTML needed to display a menu with instrument with a list of songs
-	 * 
-	 * @return String HTML
-	 */
-	public function showMenu(\model\Instrument $instrument) {  //TODO try an refactor this to v_navigation
-		$songArray = $instrument->getSongs()->toArray();	
-		$view = new \view\NavigationView();
-		
-		// RENDER THE 'MENU' with songs 
-		$menu = $view->getInstrumentButton($instrument);
-		
-		// UL inside an list element! (for proper HTML-syntax)
-		$menu .= "<li><ul id='songMenu'>";
-		
-		foreach($songArray as $song) {
-			$menu .= "<li><a href='?".NavigationView::$action."=".NavigationView::$actionShowSong;
-			$menu .= "&amp;".InstrumentView::$getLocation."=" . 
-					urlencode($instrument->getInstrumentID());
-			$menu .= "&amp;".SongView::$getLocation."=" . 
-					urlencode($song->getSongID()) ."'>".$song->getName()."</a></li>";
-		}
-		$menu .= "</ul></li>";	
-		return $menu;
-	}	
-
+	
 	
 	/**
 	 * Creates the HTML needed to display a instrument with a list of songs
@@ -102,7 +77,8 @@ class InstrumentView {
 		
 		//TODO Remove <br />
 		$html .="<br /><br /><h2> Monthly overview</h2>";
-		
+		$html.="<p>Monthly overview är inte ett användarfall! <br />Kommer att utveckla detta om jag fortsätter med projektet efter kursen. 
+		<br /> Tyckte det kunde vara en bra grej att ha i framtiden, <br /> därför lämnar jag plats för det i strukturen.</p>";
 		//set feedback message
 		$html.="<p>" . $this->sessionHelper->getAlert(). "</p>";
 		

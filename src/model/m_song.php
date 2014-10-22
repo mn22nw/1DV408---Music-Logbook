@@ -18,7 +18,7 @@ class Song {
 		
 	}
 	
-	public function equals(Song $other) {
+	public function equals(Song $other) {  // TODO is this used?
 		return (
 			$this->getName() == $other->getName() &&
 			$this->getsongID() == $this->getsongID()
@@ -29,8 +29,12 @@ class Song {
 		return $this->name;
 	}
 	
-	public function getTotalPracticetime() {  //TODO eh, fix this somehow duuh
+	public function getTotalPracticetime() {  //TODO eh, fix this somehow =S
 		return $this->length;
+	}
+	
+	public function setNotes($notes) {
+		$this->notes = $notes;
 	}
 	
 	public function getNotes() {

@@ -3,6 +3,7 @@ namespace model;
 
 require_once ('./src/model/m_instrument.php');
 require_once ('./src/model/m_instrumentList.php');
+require_once ('./src/model/m_songRepository.php');
 require_once ('./src/model/base/Repository.php');
 require_once("src/helper/SessionHelper.php");
 
@@ -121,8 +122,19 @@ class InstrumentRepository extends base\Repository {
 
 	public function delete(\model\Instrument $instrument, $username) {
 			
-		$db = $this -> connection();
 		
+		$mainInstrumentID = $this->getMainInstrument($username);
+		$instrumentID = $instrument -> getInstrumentId();
+		
+		//if main instrument is going to be deleted, set main to 0 in usertable
+		if ($mainInstrumentID == $instrumentID)
+		{	
+			$this->updateMainInstrument(0, $username);
+			$mainInstrumentID = 0;
+		}
+	
+		$db = $this -> connection();
+
 		//delete songs from songtable
 		$sql = "DELETE * FROM". self::$songTable. "WHERE" . self::$instrumentID . "= ?";  
 		$params = array($instrument -> getInstrumentId());
@@ -135,11 +147,11 @@ class InstrumentRepository extends base\Repository {
 		$query -> execute($params);
 		
 		// unset and set session and get main instrument id from user
-		$mainInstrument = $this->getMainInstrument($username);
+		$mainInstrumentID = $this->getMainInstrument($username);
 		$this->sessionHelper->unsetSession();
-		$this->sessionHelper->setInstrumentID($mainInstrument);
+		$this->sessionHelper->setInstrumentID($mainInstrumentID);
 	}
-
+	
 	public function toList() {
 		
 		try {
@@ -220,7 +232,6 @@ class InstrumentRepository extends base\Repository {
 	
 	public function updateMainInstrument($instrumentID, $username) { // TODO -NEED TO ADD TO THE RIGHT USER!
 		
-		try { 
 				$db = $this->connection();
 				$db->beginTransaction();
 				
@@ -246,11 +257,6 @@ class InstrumentRepository extends base\Repository {
 				//unsets and sets session with instrumentID	
 				$this->sessionHelper->unsetSession();
 				$this->sessionHelper->setInstrumentID($instrumentID);
-		}
-				catch(Exception $e){  // catch to be able to do a rollback!
-				    $db->rollback();
-				    throw new \Exception ($e->getMessage());
-				}		
-			
+	
 		}
 }

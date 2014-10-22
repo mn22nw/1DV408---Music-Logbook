@@ -306,7 +306,7 @@
 	
 	/**    HOMEPAGE       **
 -------------------------------------------------------------------*/	
-	#signUp, #login {
+	#signUp, #signIn {
 	
 				display:block;
 				float:right;
@@ -329,7 +329,7 @@
 		
 	}
 	
-	#login { 	
+	#signIn { 	
 				clear:right;
 				background:#E95D39;
 				margin-top: 20px;
@@ -347,9 +347,41 @@
 			background-size:  100% 100%;
 	}
 	
-	/**    LOGIN      **
+	
+	#musicbar ul {
+			height:100%;
+			padding:50px;
+			padding-top:50px;
+			font-weight:bold;
+			margin:0 auto;
+	}
+	#musicbar li {
+			width:90%;
+			padding:10px;
+			text-align:right;
+			font-size:1.3em;
+			line-height:33px;
+			padding-right:60px;
+			font-style:italic;
+	}
+	
+	#musicbar li:nth-child(even) {
+				font-weight:normal;
+				color:#E95D39;
+	}
+	
+	#treble {
+		width:150px;
+		height:330px;
+		float:left;
+		margin-left:50px;
+		margin-top:6px;
+		background: url('../images/treble.png');
+	}
+
+	/**    SIGN IN      **
 -------------------------------------------------------------------*/	
-	#loginView {
+	#signInView {
 		
 				max-width:350px;
 				
@@ -369,21 +401,21 @@
 				font-weight:bold;
 				border:none;
 	}
-	#loginView h2 {
+	#signInView h2 {
 		
 				max-width:350px;
 				
 	}
-	#loginView p {
+	#signInView p {
 				font-size:1.3em;
 				line-height:30px;
 	}
 	
-	#loginView input{
+	#signInView input{
 				float:none;
 	}
 	
-	#loginView .checkbox {
+	#signInView .checkbox {
 		float:left;
 		clear:left;
 		height:30px;
@@ -392,7 +424,7 @@
 		
 	}
 	
-	#loginView .checkbox:focus {	
+	#signInView .checkbox:focus {	
 		border:none;
 	}
 	
@@ -424,7 +456,7 @@
 				font-family:"Georgia", sans-serif;
 	}
 
-	.LoginBox {
+	.signInBox {
 	
 		min-width:260px;
 		width:40%;
@@ -441,12 +473,12 @@
 		padding-bottom:20px;
 		margin-bottom:20px;
 	} 
-	.LoginBox p {
+	.signInBox p {
 		text-align:left;
 		margin-top:25px;
 	}
 	
-	.LoginBox h2 {
+	.signInBox h2 {
 		margin-top:5px;
 		line-height:17px;
 	}
@@ -461,11 +493,11 @@
 		display:block;	
 	}
 	
-	#feedbackLogin {
+	#feedbacksignIn {
 		padding:10px 0;
 		clear:both;
 	}
-	.LoginBtn, .LogoutBtn {
+	.signInBtn, .LogoutBtn {
 		padding:5px 30px;
 		margin-top:15px;
 		display:block;
@@ -477,8 +509,8 @@
 		cursor:pointer;
 		clear:both;
 	}
-	.LoginBtn:focus , .LogoutBtn:focus{outline:0;}
-	.LogoutBtn {
+	.signInBtn:focus , .SignOutBtn:focus{outline:0;}
+	.SignOutBtn {
 		margin:0 auto;
 		margin-top:15px;
 		margin-bottom:45px;

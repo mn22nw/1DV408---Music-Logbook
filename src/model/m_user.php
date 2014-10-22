@@ -45,7 +45,7 @@ class User{   // Includes User details
 	public function validateUsername($username) {
 		
 		if (mb_strlen($username) < self::minUsernameLen) {
-			$this->sessionHelper->setAlert("Användarnamnet har för få tecken. Minst 3 tecken.");  //medveten om ev. strängberoende men ville ha validering även här.
+			$this->sessionHelper->setAlert("The username must be at least 3 characters long");  //medveten om ev. strängberoende men ville ha validering även här.
 			throw new \Exception();
 		}
 		

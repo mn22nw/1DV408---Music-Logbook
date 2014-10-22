@@ -1,6 +1,6 @@
 <?php
 namespace model;
-
+//Dependencies
 require_once ('./src/model/base/Repository.php');
 require_once ('./src/model/m_songList.php');
 
@@ -105,6 +105,21 @@ class SongRepository extends base\Repository {
 		
 	}
 
+	public function saveNotes () {
+		
+				$db = $this -> connection();
+				
+				$sql = "INSERT INTO $this->dbTable (". self::$notes .") VALUES (?, ?, ?)";
+				$params = array("", ucfirst($song -> getName()), $song->getOwner()->getInstrumentID());
+				$query = $db -> prepare($sql);
+				$query -> execute($params);
+				$songID = $db->lastInsertId(); 
+				return $songID;
+		
+	}
+	
+	
+	
 	public function toList() {  //TODO- when is this called? COME ON!
 		try {
 			$db = $this -> connection();

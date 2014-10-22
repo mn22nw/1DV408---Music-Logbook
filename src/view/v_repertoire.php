@@ -18,7 +18,7 @@ class RepertoireView {
 		return NULL;
 	}
 
-	public function visitorHasChosenRepertoire() {  //TODO not used!
+	public function visitorHasChosenRepertoire() {  //TODO not used?!
 		if (isset($_GET[self::$getLocation])) 
 			return true;
 
@@ -36,21 +36,26 @@ class RepertoireView {
 		}
 		return NULL;
 	}
-
-	public function showAllInstruments( \model\InstrumentList $repertoireOwners, $mainInstrumentID) {
+	
+	/**
+	 * render all instruments.
+	 * @param  instrumentlist,  ID of the main instrument of a user (to know which radiobutton that should be selected)
+	 * @return html
+	 */
+	public function showAllInstruments( \model\InstrumentList $instrumentList, $mainInstrumentID) {
 		
 		$checked="";
 				
 		$ret = "<h1>My Instruments</h1>";
 		
-		if ($mainInstrumentID == 0) {
+		if (empty($instrumentList)) {
 			$ret .="You have no instruments yet!";
 		}else {
 			$ret .= "<p class='chooseInstrument'>Choose main instrument:<p>";
 			$ret .= "<form method='post' action='?action=".NavigationView::$actionSetMainInstrument."'>";
 			$ret .= "<ul id='instrumentlist'>";
 			
-			foreach ($repertoireOwners->toArray() as $instrument) {//Changed this to work with new navigation view.
+			foreach ($instrumentList->toArray() as $instrument) {//Changed this to work with new navigation view.
 				
 				$instrumentID = $instrument->getInstrumentID();
 				$ret .= "<li><a href='?action=".NavigationView::$actionShowInstrument."&amp;".self::$getLocation."=" . 

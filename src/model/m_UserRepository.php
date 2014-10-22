@@ -32,9 +32,9 @@ class UserRepository extends \model\base\Repository {
 			
 			$query->execute($params);
 			
-			$this->sessionHelper->setAlert("Registrering av ny användare lyckades");
+			$this->sessionHelper->setAlert("User was successfully added");
 			
-			$this->sessionHelper->setCreatedUsername($user->getUsername());
+			$this->sessionHelper->setCreatedUsername($user->getUsername());  //TODO where's the cu used?
 		}
 		catch(\PDOExeption $e){  
 			throw new \Exception($e);

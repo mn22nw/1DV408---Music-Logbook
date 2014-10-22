@@ -3,25 +3,24 @@
 
   require_once("src/model/m_UserRepository.php");
   require_once("src/model/m_user.php");
-  require_once("src/view/v_register.php");
+  require_once("src/view/v_signUp.php");
   require_once("src/helper/SessionHelper.php");
 
-  class Register{
+  class SignUp{
     private $model;
     private $view;
 	private $sessionHelper;
 
     public function __construct() {
       $this->model = new \model\UserRepository();
-      $this->view = new \view\Register($this->model);
+      $this->view = new \view\SignUp($this->model);
 	  $this->sessionHelper = new \helper\SessionHelper(); 
     }
 
     public function viewPage() {
-    		if($this->view->RegisterAttempt()) {  
+    		if($this->view->SignUpAttempt()) {  
     			if ($this->addUser()) { //<--true if user was successfully added
-    				 header('Location: http://www.mianygren.nu/PHP-1DV408/Labb4/index.php');
-					 exit;
+    				\view\NavigationView::RedirectToSignUp();
     			}
 			}
       		return $this->view->showSignUp();
@@ -42,7 +41,7 @@
 			
 			//check i user already exists in database
 			if ($this->model->usernameAlreadyExists($username)) {
-				$this->sessionHelper->setAlert("Användarnamnet är redan upptaget.");
+				$this->sessionHelper->setAlert("The username is already taken.");
 				throw new \Exception();
 			}
 			
@@ -59,9 +58,9 @@
 		
 	} 
 	
-	public function didUserPressRegister(){ // This is used in index.php file so that I don't need to have an extra page for register
+	public function didUserPressSignUp(){ // This is used in index.php file so that I don't need to have an extra page for signUp
 		
-		if($this->view->didUserPressRegister()){
+		if($this->view->didUserPressSignUp()){
       		return true;
       	}
 		return false;

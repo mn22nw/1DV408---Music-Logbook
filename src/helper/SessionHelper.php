@@ -2,10 +2,11 @@
   namespace helper;
 
   class SessionHelper {
-    private static $sessionAlert = "sessionAlert";
-	public static $instrumentID = "instrumentID";    
+    private static $sessionAlert = 'sessionAlert';
+	public static $instrumentID = 'instrumentID';    
 	private static $sessionName = 'name';
-	private static $ceatedUsername = "ceatedUsername";  
+	private static $username = 'username';
+	private static $ceatedUsername = 'ceatedUsername';  
 
     /**
       * Get an alert from the session alert system
@@ -35,6 +36,24 @@
       $_SESSION[self::$sessionAlert] = $string;
       return true;
     }
+
+// setting / getting username from session //
+
+public function getUsername() {
+      if (isset($_SESSION[self::$username])) {
+        $ret = $_SESSION[self::$username];
+      } else {
+        $ret = "";
+      }
+
+      return $ret;
+    }
+
+	 public function setUsername($string) {
+      $_SESSION[self::$username] = $string;
+      return true;
+    }
+
 
 // FUNCTIONS FOR USER LOGIN / REGISTER //
 
