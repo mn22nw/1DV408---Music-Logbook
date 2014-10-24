@@ -31,23 +31,17 @@ class InstrumentRepository extends base\Repository {
 		$this->sessionHelper = new \helper\SessionHelper();
 	}
 	
-	public function add($instrumentName, $username) {  // TODO -NEED TO ADD TO THE RIGHT USER!
+	public function add($instrumentName, $username) {  
 	
 
 		try {
 			 	$db = $this->connection();
 				$db->beginTransaction();  // TODO- might not need begin/end transaction
 				
-				// SELECT (userID from usertable) //
-				$sql= "SELECT `". self::$userID . "` FROM `". self::$userTable . "` WHERE `". self::$username . "` = '".$username. "' LIMIT 1";
-				$query = $db->prepare($sql);
-				$query->execute();
-				$result= $query->fetch(\PDO::FETCH_ASSOC);
-				// END SELECT
-				
-				
+				$userIDFK = $this->getUserID($username);
+			
 				//check if song already exists in database
-				if ($this->nameAlreadyExists($instrumentName, $result[self::$userID])) {
+				if ($this->nameAlreadyExists($instrumentName, $userIDFK)) {
 					$this->sessionHelper->setAlert("You already have an instrument called '". $instrumentName . "'. </p><p>Please choose a new name.");	
 					return null;	
 				}
@@ -56,7 +50,7 @@ class InstrumentRepository extends base\Repository {
 				
 				// INSERT (instrument into database) //
 				$sql = "INSERT INTO $this->dbTable (". self::$instrumentID . ", " . self::$name . " , " . self::$userIDFK . ") VALUES (  ?, ?, ?)";
-				$params = array("", strtoupper($instrumentName), $result[self::$userID]);
+				$params = array("", strtoupper($instrumentName), $userIDFK);
 		
 				$query = $db->prepare($sql);
 				$query->execute($params);
@@ -152,14 +146,17 @@ class InstrumentRepository extends base\Repository {
 		$this->sessionHelper->setInstrumentID($mainInstrumentID);
 	}
 	
-	public function toList() {
+	public function toList($username) {
 		
 		try {
 			$db = $this -> connection();
-
-			$sql = "SELECT * FROM $this->dbTable";
+			
+			$userIDFK = $this->getUserID($username);
+			
+			$sql = "SELECT * FROM `". $this->dbTable. "` WHERE " . self::$userIDFK . "= ?";
+			$params = array($userIDFK);
 			$query = $db -> prepare($sql);
-			$query -> execute();
+			$query -> execute($params);
 
 			foreach ($query->fetchAll() as $owner) {
 				$name = $owner[self::$name];
@@ -184,7 +181,6 @@ class InstrumentRepository extends base\Repository {
 			
 				$instrument->setInstrumentID($instrumentID);  
 		
-		//TODO click on an instrument from the list to set session ID
 				$this->instruments->add($instrument);   
 			}
 			
@@ -198,7 +194,9 @@ class InstrumentRepository extends base\Repository {
 			die('Error while connection to database.');
 		}
 	}
-	
+	/** To prevent the user to create an instrument that already exists 
+	 * @return bolean
+	 */
 	public function nameAlreadyExists($instrumentName, $userID) {
 		
 			$db = $this->connection();
@@ -229,25 +227,35 @@ class InstrumentRepository extends base\Repository {
 				
 		return $result[self::$instrumentIDFK];
 	}
-	
-	public function updateMainInstrument($instrumentID, $username) { // TODO -NEED TO ADD TO THE RIGHT USER!
-		
-				$db = $this->connection();
-				$db->beginTransaction();
-				
+	/*
+	 * @return UserID from db user table
+	 */
+	public function getUserID($username) {
+					
+				$db = $this -> connection();
 				// SELECT (userID from usertable) //
 				$sql= "SELECT `". self::$userID . "` FROM `". self::$userTable . "` WHERE `". self::$username . "` = '".$username. "' LIMIT 1";
 				$query = $db->prepare($sql);
 				$query->execute();
 				$result= $query->fetch(\PDO::FETCH_ASSOC);
 				// END SELECT
+				
+				return $result[self::$userID];
+	}
+	
+	public function updateMainInstrument($instrumentID, $username) { 
+		
+				$db = $this->connection();
+				$db->beginTransaction();
+							
+				$userID = $this->getUserID($username);
 							
 				// UPDATE (InstrumentID into usertable) //
 				$sql = "UPDATE ". self::$userTable . "
 		        SET ". self::$instrumentIDFK . "=?
 				WHERE " . self::$userID . "=?";
 				
-				$params = array($instrumentID, $result[self::$userID]);
+				$params = array($instrumentID, $userID);  //TODO check that update main instrument works!
 				$query = $db->prepare($sql);
 				$query->execute($params);
 				// END UPDATE //

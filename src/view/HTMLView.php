@@ -11,7 +11,7 @@
       * @param string $body - The middle part of the page
       * @return string - The whole page
       */
-		public function echoHTML($title, $head, $body, $htmlMenu) {
+		public function echoHTML($title, $head, $body, $htmlMenu, $script) {
 			if ($body === NULL) {
 				throw new \Exception("HTMLView::echoHTML does not allow body to be null");
 			}
@@ -41,6 +41,7 @@
 			
 			$html .= "</div>"; // END page
 			$html .= "<script type='text/javascript' src='script/my_jquery.js'></script>";
+			$html .= $script;
 			$html .= "</body>
 				</html>";
 				

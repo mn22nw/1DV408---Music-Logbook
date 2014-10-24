@@ -46,6 +46,7 @@
 	#logo {
 				margin-top:25px;
 				height:100px;
+				margin-right:10px;
 	}
 	
 	#logo a {
@@ -55,6 +56,14 @@
 	#logo img {
 				max-width:100%;
 	}
+	
+	.username {
+		color:#E95D39;	
+		padding:10px;
+		font-weight:bold;
+		cursor:default;
+	}
+	
 	
 	#menu {
 		width:100%; 
@@ -159,13 +168,17 @@
 	}
 	
 
-	
-
-	
-	
 
 	/**   INSTRUMENT LIST   **
 ------------------------------------*/	
+	
+	/** if user has no instruments **/
+	#addInstrumentIfzero {
+				clear:left;		
+	}
+	
+	
+	/** if user has instruments **/
 	#instrumentlist {
 				border-top: 1px solid #333333;
 				float:left;
@@ -214,9 +227,12 @@
 				
 	}	
 	
-/*	
-	#instrumentlist li:nth-child(even) { background: #CCC;}
-	#instrumentlist li:nth-child(odd) { background: #FFF;} */
+	
+	#instrumentlist li:nth-child(even) { 		
+				
+	}
+	#instrumentlist li:nth-child(odd) { background: url('../images/even.png') repeat-y;
+				background-size:contain; } 
 
 	
 	article, aside, details, figcaption, figure, main
@@ -225,13 +241,24 @@
 	
 	/**    FORMS       **
 -------------------------------------------------------------------*/		
-	#addInstrument {
+	#addInstrument , #addSong {
 				width:100%;
 				height:100%;
 				padding-left:70px;
 		
+	} 
+	#addInstrument input , #addSong input{ 
+				border:1px solid #333;
+				cursor:text;
+				
 	}
-	#addInstrument h1 {
+	
+	#addInstrument .submit , #addSong .submit{ 
+				cursor:pointer;
+				
+	}
+	
+	#addInstrument h1 , #addSong h1{
 				text-align:left;
 	}
 	
@@ -240,22 +267,20 @@
 	.deleteBtn { 
 				display:block;
 				float:right;
-				width:100px;
 				font-size:.7em;
 				text-align:center;
-				padding:10px 20px;
-				padding-right:0px;
-				padding-left: 0px;
 				margin-right:20px;
-				color:#FFF;
-				background:#E95D39;
-				border-radius:5px;
-				line-height:15px;
-				font-weight:bold;
+				width:100px;
+				height:70px;
+				background: url('../images/buttons.png') no-repeat;
+				text-indent:200%;
+				white-space:nowrap;
+				overflow:hidden;
+				background-position:-200px -80px; 
 		
 		}
 		
-	.chooseInstrument {
+	.chooseMainInstrument, .mainInstrumentDefault {
 					display:block;
 					float:right;
 					margin-right:50px;
@@ -263,36 +288,107 @@
 					font-weight:bold;
 					margin-top:50px;
 	}
+	.mainInstrumentDefault {
+					margin-right:90px;
+	}
 		
 /**   SONG OVERVIEW      ** TODO-fix textarea!
 -------------------------------------------------------------------*/
-#songOverview h1 {
-	line-height:25px;
-	padding:10px;
-	display:block;
-	margin-top:-5px;
-}
-#instrumentBreadcrum {
-				padding:10px; 
-				line-height:25px;
-				width:100%;
-				color:#E95D39;
-				font-weight:bold;
-}
-
-#textbox {
-	background: url('images/white.png') center center no-repeat; /* This ruins default border */
-	background:#EBC148;
-	width:500px;
-	max-width:500px;
-	height:300px;
-	max-height:300px;
-	display:block;
-	outline:none;
-	border:1px solid #000;
-	padding:15px;
-	border-radius:20px;
-}
+	
+	#songOverview h1 {
+		line-height:25px;
+		padding:10px;
+		display:block;
+		margin-top:-5px;
+	}
+	
+	#songOverview .submit {
+			width:160px;
+	}
+	#songOverview .deleteBtn {
+		width:100px;
+		height:60px;
+		background: url('../images/buttons.png') no-repeat;
+		text-indent:200%;
+		white-space:nowrap;
+		overflow:hidden;
+		background-position:-200px 0; 
+	}
+	
+	#instrumentBreadcrum {
+					padding:10px; 
+					line-height:25px;
+					width:300px;
+					color:#E95D39;
+					font-weight:bold;
+	}
+	
+	#practiceTime, #songOverview h3 {
+		clear:both;
+	}
+	
+	#songOverview h3 { 
+			display:block; 
+			padding-top:15px; 
+			line-height:10px; 
+			width:100px;
+			height:15px;
+			padding-left:15px;
+			}
+	
+	/** TIMER **/
+	
+	#startTimer, #stopTimer{
+		display:block;
+		width:200px;
+		height:65px;
+		font-size:1.3em;
+		background: url('../images/buttons.png') no-repeat;
+		text-indent:200%;
+		white-space:nowrap;
+		overflow:hidden;
+		cursor:pointer 
+	}
+		
+	#startTimer {
+			background-position:0 0; }
+	#stopTimer {
+			background-position:0 -65px; 
+	}	
+	
+	/** NOTES **/
+	#notes {
+		background: url('../images/notes.png');
+		background-repeat:y;
+		background-size:contain;
+		width:500px;
+		max-width:500px;
+		height:300px;
+		max-height:300px;
+		display:block;
+		border:1px solid #000;
+		padding:15px;
+		border-radius:20px;
+		clear:left;
+		resize:none;
+		margin-bottom: 10px; 
+		outline: none; 
+		font-size:1.2em;
+	} :hover { outline: none; }
+	
+	.italic {
+			font-style:italic;
+		}	
+		  	
+	.saveBtn { 
+		background:#E95D39;
+		width:100px;
+		border:0;
+		font-weight:bold;
+		border-radius: 10px;
+		color:#FFF;
+		margin-top:20px;
+			}
 
 	/**    ERRORMESSAGES       **
 -------------------------------------------------------------------*/
@@ -386,7 +482,14 @@
 				max-width:350px;
 				
 	}
-	/**/
+	
+	#signInView input{
+		
+				border:1px solid black;
+				padding:5px;
+				
+	}
+	
 	#submit {
 				float:left;
 				color:#FFF;
@@ -440,9 +543,6 @@
 		margin:5px 5px 10px 0;
 		float:left;
 		clear:both;
-	}
-	input:focus {
-	border: 1px solid #333;
 	}
 	
 	.submit {
@@ -509,7 +609,7 @@
 		cursor:pointer;
 		clear:both;
 	}
-	.signInBtn:focus , .SignOutBtn:focus{outline:0;}
+	.signInBtn:focus , .SignOutBtn:focus , .saveBtn:focus {outline:0;}
 	.SignOutBtn {
 		margin:0 auto;
 		margin-top:15px;

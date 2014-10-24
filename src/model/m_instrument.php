@@ -49,7 +49,6 @@ class Instrument {
 	
 	/**
 	 * Add a new song to the instrument.
-	 * Do not add empty songs!?
 	 * 
 	 * @param \model\Song $song Instance of the populated song to add. 
 	 * @return Void

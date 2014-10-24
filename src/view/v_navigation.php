@@ -24,6 +24,9 @@ class NavigationView {
 	public static $actionAddSong = 'addSong';
 	public static $actionShowSong = 'showSong';
 	public static $actionDeleteSong = 'deleteSong';
+	public static $actionSaveNotes = 'saveNotes';
+	public static $actionStartTimer = 'startTimer';
+	public static $actionStopTimer = 'stopTimer';
 	
 	private $songMenu = "";
 	
@@ -48,23 +51,24 @@ class NavigationView {
 	 * 
 	 * @return String HTML
 	 */
-	public function showMenuLoggedIn(){
+	public function showMenuLoggedIn($username, $showSongList = true){
 		$html = "<div id='menu'>
 					<ul>";
-		$html .= self::showBaseMenu();
-		$html .= $this->songMenu;
+		$html .= self::showBaseMenu($username);
+		if($showSongList)
+			$html .= $this->songMenu;
 		$html .= "</ul></div>";
 		return $html;
 	}
 	
 	
-	public static function showBaseMenu(){
-		$html = "<li><a href='?".self::$action."=".self::$actionShowAll."'>Show all instruments</a></li>";  
+	public static function showBaseMenu($username){
+		$html  = "<li class ='username'>" . ucfirst($username) ."</li>"; 
+		$html .= "<li><a href='?".self::$action."=".self::$actionShowAll."'>My instruments</a></li>";  
 		$html .= "<li><a href='?".self::$action."=".self::$actionAddInstrument."'>Add Instrument</a></li>";  
 		$html .= "<li><a href='?".self::$action."=".SignIn::$actionSignOut."'>Sign out</a></li>";
 		return $html;
 	}
-	
 	
 		/**
 	 * Creates the HTML needed to display a menu with instrument with a list of songs
@@ -78,9 +82,11 @@ class NavigationView {
 		// RENDER THE 'MENU' with songs 
 		$menu = $view->getInstrumentButton($instrument);
 		
+		if (empty($songArray)) 
+		$menu .= "<p><span class='italic'>You have no songs <br /> for this intrument yet!<span></p>";
+		
 		// UL inside an list element (for proper HTML-syntax)
 		$menu .= "<li><ul id='songMenu'>";
-		
 		foreach($songArray as $song) {
 			$menu .= "<li><a href='?".NavigationView::$action."=".NavigationView::$actionShowSong;
 			$menu .= "&amp;".InstrumentView::$getLocation."=" . 
@@ -138,14 +144,14 @@ class NavigationView {
 	 */
 	public static function getInstrumentButton($instrument) {
 		$button ="<li><a href='?action=".NavigationView::$actionShowInstrument."&amp;".InstrumentView::$getLocation."=" . 
-					urlencode($instrument->getInstrumentID()) ."'id='instrumentBtn'>" .
+					urlencode($instrument->getInstrumentID()) ."' id='instrumentBtn'>" .
 					$instrument->getName()."</a></li>";
 		return $button;
 	}
 	
 	public static function getInstrumentBreadCrum($instrument) {
 		$button ="<a href='?action=".NavigationView::$actionShowInstrument."&amp;".InstrumentView::$getLocation."=" . 
-					urlencode($instrument->getInstrumentID()) ."'id='instrumentBreadcrum'>" .
+					urlencode($instrument->getInstrumentID()) ."' id='instrumentBreadcrum'>" .
 					$instrument->getName()."</a>";
 		return $button;	
 	}

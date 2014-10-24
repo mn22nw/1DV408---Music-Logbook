@@ -5,6 +5,7 @@ class HTMLBody {
 	
 	private $body;
 	private $menu;
+	private $script;
 	
 	/**
 	 * set body for HTML 
@@ -45,5 +46,15 @@ class HTMLBody {
 		return $this->menu;
 	}
 	
+	public function setScript($script) {
+		$this->script = $script;
+	}
+	
+	public function getScript() {  
+		if(!empty($this->script))
+			return $this->script;
+		
+		return "";
+	}
 }
 

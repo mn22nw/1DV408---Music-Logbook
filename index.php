@@ -18,4 +18,5 @@ $head .= '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery
 
 $htmlBody = $navigation->doControll(); 
 
-$view->echoHTML("Music Logbook - Home", $head, $htmlBody->getBody(), $htmlBody->getMenu());
+$view->echoHTML("Music Logbook - Home", $head, $htmlBody->getBody(), $htmlBody->getMenu(), $htmlBody->getScript());
+

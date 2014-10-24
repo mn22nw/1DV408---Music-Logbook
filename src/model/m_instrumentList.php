@@ -8,10 +8,10 @@ require_once("m_instrument.php");
  * Type secure collection of instruments.
  */
 class InstrumentList {
-	private $repertoireOwners;
+	private $instrumentList;
 	
 	public function __construct() {
-		$this->repertoireOwners = array();
+		$this->instrumentList = array();
 	}
 	
 	/**
@@ -21,7 +21,7 @@ class InstrumentList {
 	 */
 	public function toArray() {
 		
-		return $this->repertoireOwners; 
+		return $this->instrumentList; 
 	}
 	
 	/**
@@ -33,18 +33,18 @@ class InstrumentList {
 	 */
 	public function add(Instrument $instrument) {
 		if (!$this->contains($instrument))
-			$this->repertoireOwners[] = $instrument;
+			$this->instrumentList[] = $instrument;
 	}
 	
 	/**
 	 * Check if a instrument can be found within the list.
 	 * 
-	 * @param \model\InstrumentList $instrument The needle to look for.
+	 * @param \model\InstrumentList $instrument 
 	 * 
 	 * @return Boolean
 	 */
 	public function contains(Instrument $instrument) {
-		foreach($this->repertoireOwners as $key => $owner) {
+		foreach($this->instrumentList as $key => $owner) {
 			if ($owner->getInstrumentID() == $instrument->getInstrumentID() && $owner->getName() == $instrument->getName()) {
 				return true;
 			}

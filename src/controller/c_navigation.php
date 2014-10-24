@@ -1,8 +1,10 @@
 <?php
 namespace controller;
+//Dependencies
 require_once('./src/view/v_navigation.php');
 require_once('./src/view/v_htmlBody.php');
 require_once('./src/controller/c_instrument.php');
+require_once('./src/controller/c_song.php');
 require_once('./src/controller/c_signIn.php');
 require_once('./src/controller/c_signUp.php');
 require_once('Settings.php');
@@ -20,6 +22,8 @@ class Navigation {
 	public function doControll() {
 		$this->htmlBody = new \view\HTMLBody();	
 		$view = new \view\NavigationView(); 
+		$instrumentController= new InstrumentController();
+		
 		$controller;
 
 		try {
@@ -47,7 +51,7 @@ class Navigation {
 
 			switch ($view::getAction()) {
 						
-				// SHOW ALL INSTRUMENTS //		
+				# SHOW ALL INSTRUMENTS 		
 				case $view::$actionShowAll:
 					$controller = new InstrumentController();
 					$this->htmlBody->setBody($controller->showAllInstruments());
@@ -55,7 +59,7 @@ class Navigation {
 					return $this->htmlBody;
 					break;	
 					
-				// ADD INSTRUMENT //
+				# ADD INSTRUMENT 
 				case $view::$actionAddInstrument:
 					$controller = new InstrumentController();
 					$this->htmlBody->setBody($controller->addInstrument());
@@ -63,7 +67,7 @@ class Navigation {
 					return $this->htmlBody;
 					break;
 				
-				// SHOW INSTRUMENT //
+				# SHOW INSTRUMENT 
 				case $view::$actionShowInstrument:
 					$controller = new InstrumentController();		
 					$this->htmlBody->setBody($controller->show());
@@ -71,35 +75,56 @@ class Navigation {
 					return $this->htmlBody;
 					break;
 					
-				// DELETE INSTRUMENT //	
+				# DELETE INSTRUMENT 
 				case $view::$actionDeleteInstrument:
 					$controller = new InstrumentController();
 					$this->htmlBody->setBody($controller->deleteInstrument());
 					$this->htmlBody->setMenu($controller->showSongMenu()); 
 					return $this->htmlBody;
 				
-				// ADD SONG //	
+				# ADD SONG 
 				case $view::$actionAddSong:
 					$controller = new SongController();
 					$this->htmlBody->setBody($controller->addSong());
-					$this->htmlBody->setMenu($controller->showSongMenu()); 
+					$this->htmlBody->setMenu($instrumentController->showSongMenu()); 
 					return $this->htmlBody;
 				
-				// SHOW SONG //		
+				# SHOW SONG 	
 				case $view::$actionShowSong:
 					$controller = new SongController();
 					$this->htmlBody->setBody($controller->showSong());
-					$this->htmlBody->setMenu($controller->showSongMenu()); 
+					$this->htmlBody->setMenu($instrumentController->showSongMenu()); 
+					return $this->htmlBody;
+					
+				# ADD NOTES TO SONG 	
+				case $view::$actionSaveNotes:
+					$controller = new SongController();
+					$this->htmlBody->setBody($controller->saveNotes());
+					$this->htmlBody->setMenu($instrumentController->showSongMenu()); 
+					return $this->htmlBody;
+					
+				# START TIMER 		
+				case $view::$actionStartTimer:
+					$controller = new SongController();
+					$this->htmlBody->setBody($controller->startTimer());
+					$this->htmlBody->setMenu($instrumentController->showSongMenu()); 
 					return $this->htmlBody;
 				
-				// DELETE SONG //		
+				# STOP TIMER 		
+				case $view::$actionStopTimer:
+					$controller = new SongController();
+					$this->htmlBody->setBody($controller->stopTimer());
+					$this->htmlBody->setMenu($instrumentController->showSongMenu()); 
+					return $this->htmlBody;
+				
+				# DELETE SONG 		
 				case $view::$actionDeleteSong:
 					$controller = new SongController();
 					$this->htmlBody->setBody($controller->deleteSong());
-					$this->htmlBody->setMenu($controller->showSongMenu()); 
+					$this->htmlBody->setMenu($instrumentController->showSongMenu()); 
 					return $this->htmlBody;
 				
-				// SET MAIN INSTRUMENT //		
+				# SET MAIN INSTRUMENT 		
 				case $view::$actionSetMainInstrument:
 					$controller = new InstrumentController();
 					$this->htmlBody->setBody($controller->setMainInstrument());
@@ -107,7 +132,7 @@ class Navigation {
 					return $this->htmlBody;
 				
 				
-				// HOMEPAGE - for signed in users //
+				# HOMEPAGE - for signed in users 
 				default :   
 					$controller = new InstrumentController();
 					$this->htmlBody->setBody($controller->showAllInstruments());

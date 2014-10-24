@@ -140,3 +140,16 @@ villeut
 villeut
 villeut
 
+hoho
+hoho
+SQLSTATE[HY000] [2002] Det gick inte att göra en anslutning eftersom måldatorn aktivt nekade det.
+
+SQLSTATE[HY000] [2002] Det gick inte att göra en anslutning eftersom måldatorn aktivt nekade det.
+
+hoho
+
+
+
+DateTime::__construct(): Failed to parse time string (Y-m-d H:i:s.153491604) at position 1 (-): Unexpected character
+DateTime::__construct(): Failed to parse time string (Y-m-d H:i:s.000000) at position 1 (-): Unexpected character
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'userIDFK' cannot be null

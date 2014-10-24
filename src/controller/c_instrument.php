@@ -3,7 +3,6 @@
 namespace controller;
 
 //Dependencies
-require_once("./src/view/v_repertoire.php");
 require_once("./src/view/v_instrument.php");
 require_once("./src/view/v_song.php");
 require_once("./src/model/m_instrumentList.php");
@@ -20,15 +19,13 @@ class InstrumentController {
 	private $instrumentRepository; 
 	//view
 	private $instrumentView;
-	private $repertoireView;
 	private $navigationView;
 
 	/**
-	 * Instantiate required views and required repositories.
+	 * Instantiate required views, required repositories and models.
 	 */
 	public function __construct() {
-		$this->repertoireView = new \view\RepertoireView(); //Still required in class scope?
-		$this->instrumentView = new \view\InstrumentView(); //Still required in class scope?
+		$this->instrumentView = new \view\InstrumentView(); 
 		$this->navigationView = new \view\NavigationView();
 		$this->instrumentRepository = new \model\InstrumentRepository();
 		$this->sessionHelper = new \helper\SessionHelper();
@@ -40,7 +37,7 @@ class InstrumentController {
 	*/
 	public function show() {
 		
-		$instrumentID = $this->repertoireView->getInstrumentID();  //gets value from url
+		$instrumentID = $this->instrumentView->getInstrumentID();  //gets value from url
 		
 		//save instrumentID in session
 		$this->sessionHelper->setInstrumentID($instrumentID); 
@@ -55,22 +52,22 @@ class InstrumentController {
 	public function showSongMenu () { 
 			
 			//$this->sessionHelper->setInstrumentID(6);	//it unsets somewhere??
-			$instrumentID = $this->sessionHelper->getInstrumentID();  //TODO change maininstrument to0 if user deletes it!
+			$instrumentID = $this->sessionHelper->getInstrumentID();  
 			
 			$sessionUsername = $this->sessionHelper->getUsername();
 			
 			if (empty($instrumentID)){		
-				$instrumentID = $this->instrumentRepository->getMainInstrument($this->sessionHelper->getUsername()); //TODO get real username	
+				$instrumentID = $this->instrumentRepository->getMainInstrument($this->sessionHelper->getUsername()); 
 			}	
 			
-			if ($instrumentID == 0)
-				return "";	
+			if ($instrumentID == 0)  
+				return $this->navigationView->showMenuLoggedIn($sessionUsername, $showSongList = false); 
 			
 			$owner = $this->instrumentRepository->get($instrumentID);  
 				
 			$this->navigationView->showSongMenu($owner); 	
 			
-			return $this->navigationView->showMenuLoggedIn(); 
+			return $this->navigationView->showMenuLoggedIn($sessionUsername); 
 	}
 	
 	
@@ -80,10 +77,10 @@ class InstrumentController {
 	 * @return String HTML
 	 */
 	public function showAllInstruments() {
-		
+		$username = $this->sessionHelper->getUsername();
 		$mainInstrumentID = $this->instrumentRepository->getMainInstrument($this->sessionHelper->getUsername()); 
 		
-		return $this->repertoireView->showAllInstruments($this->instrumentRepository->toList(), $mainInstrumentID);  
+		return $this->instrumentView->showAllInstruments($this->instrumentRepository->toList($username), $mainInstrumentID);  
 	}
 	
 	
@@ -124,7 +121,7 @@ class InstrumentController {
 	
 	public function setMainInstrument() {
 		
-		$instrumentID = $this->repertoireView->getInstrumentIDfromRadioBtn();
+		$instrumentID = $this->instrumentView->getInstrumentIDfromRadioBtn();
 		
 		$this->instrumentRepository->updateMainInstrument($instrumentID, $this->sessionHelper->getUsername()); 
 			

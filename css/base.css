@@ -45,10 +45,19 @@
 				padding:10px; 
 				line-height:15px;
 				color:#000;
+				cursor:pointer;
 				}
 	a img{
 				border:0;
 	}
+	input {
+			cursor:pointer;
+   			border: 0px solid;
+			outline:none;
+			font-family:"Georgia", sans-serif;
+	} 
+	input:focus { outline:0; border:none;}
+	input:hover { outline:0; border:none;}
 
 .unselectable {
     -WEBKIT-USER-SELECT: NONE; /* SAFARI, CHROME */

@@ -6,11 +6,16 @@ require_once ('./src/model/m_songList.php');
 
 class SongRepository extends base\Repository {
 	private $songs;
+	private $sessionHelper;
 	
+	//DB fields
 	private static $name = 'name';
 	private static $songID = 'songID';
+	private static $notes = 'notes';
+	private static $practicedTime = 'practicedTime';
 	public static $instrumentID = 'instrumentIDFK';
-	public $sessionHelper;
+	
+	
 	
 	public function __construct() {
 		$this -> dbTable = 'song';
@@ -52,21 +57,11 @@ class SongRepository extends base\Repository {
 		$result = $query -> fetch();
 
 		if ($result) {
-			return new \model\Song($result[self::$name], $result[self::$songID],$result[self::$instrumentID]);  // TODO - add params here!
+			return new \model\Song($result[self::$name], $result[self::$songID],
+			$result[self::$instrumentID] , $result[self::$notes], $result[self::$practicedTime]);  // TODO - add params here!
 		}
 	}
 
-	public function delete($songID, $instrumentID) {
-			
-		$db = $this -> connection();
-
-		$sql = "DELETE FROM $this->dbTable WHERE " . self::$songID. "= ? AND ". self::$instrumentID. "= ?" ;
-		$params = array($songID, $instrumentID);
-
-		$query = $db -> prepare($sql);
-		$query -> execute($params);
-		
-	}
 	
 	public function nameAlreadyExists($name, $instrumentID) {
 		
@@ -105,20 +100,63 @@ class SongRepository extends base\Repository {
 		
 	}
 
-	public function saveNotes () {
+	public function getPracticedTime($songID) {
+			$db = $this -> connection();
+
+			$sql = "SELECT " .self::$practicedTime . " FROM $this->dbTable WHERE " . self::$songID. " = ?";
+			$params = array($songID);
+			$query = $db -> prepare($sql);
+			$query -> execute($params);
+	
+			$result = $query -> fetch();
+	
+			if ($result) {
+				return $result[self::$practicedTime];  
+			}
+		
+	}
+
+	public function savePracticedTime($totalPracticetimeInHours, $songID) {
+				$db = $this -> connection();
+
+				// UPDATE (practice-time in songTable) //
+				$sql = "UPDATE ". $this -> dbTable . "
+		        SET ". self::$practicedTime . "=?
+				WHERE " . self::$songID . "=?"; 
+				
+				$params = array($totalPracticetimeInHours, $songID);
+				$query = $db->prepare($sql);
+				$query->execute($params);
+				// END UPDATE //	
+	}
+
+	public function saveNotes ($notes, $songID) {
 		
 				$db = $this -> connection();
+							
+				// UPDATE (notes in songTable) //
+				$sql = "UPDATE ". $this -> dbTable . "
+		        SET ". self::$notes . "=?
+				WHERE " . self::$songID . "=?"; 
 				
-				$sql = "INSERT INTO $this->dbTable (". self::$notes .") VALUES (?, ?, ?)";
-				$params = array("", ucfirst($song -> getName()), $song->getOwner()->getInstrumentID());
-				$query = $db -> prepare($sql);
-				$query -> execute($params);
-				$songID = $db->lastInsertId(); 
-				return $songID;
+				$params = array($notes, $songID);
+				$query = $db->prepare($sql);
+				$query->execute($params);
+				// END UPDATE //				
 		
 	}
 	
-	
+	public function delete($songID, $instrumentID) {
+			
+		$db = $this -> connection();
+
+		$sql = "DELETE FROM $this->dbTable WHERE " . self::$songID. "= ? AND ". self::$instrumentID. "= ?" ;
+		$params = array($songID, $instrumentID);
+
+		$query = $db -> prepare($sql);
+		$query -> execute($params);
+		
+	}
 	
 	public function toList() {  //TODO- when is this called? COME ON!
 		try {
